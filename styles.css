@@ -31,3 +31,10 @@
 .local-menubuilder-menu-padding-spacious { padding-block: 1.5rem; }
 .local-menubuilder-primary-nav-label { display: inline-flex; align-items: center; gap: .3em; }
 .local-menubuilder-primary-nav-label .icon { color: inherit; margin: 0; }
+
+/* Moodle's native top-level popup owns positioning; deeper branches expand inline. */
+.dropdown-menu.local-menubuilder-menu-navigation {position:absolute;width:min(22rem,calc(100vw - 2rem));min-width:min(18rem,calc(100vw - 2rem));max-width:calc(100vw - 2rem);box-sizing:border-box;}
+.dropdown-menu.local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown>ul {position:static;inset:auto;width:auto;min-width:0;max-width:none;margin-block:.15rem .4rem;margin-inline:1rem .5rem;border:0;border-inline-start:2px solid var(--bs-border-color,#dee2e6);border-radius:0;box-shadow:none;}
+.local-menubuilder-menu-navigation .local-menubuilder-menu-parent-trigger>.local-menubuilder-menu-item-text {flex:1 1 auto;min-width:0;white-space:normal;overflow-wrap:anywhere;text-align:start;}
+.local-menubuilder-menu-navigation .local-menubuilder-menu-parent-trigger>i:last-child {flex:0 0 auto;margin-inline-start:.65rem;}
+.local-menubuilder-menu-navigation .dropdown-item {box-sizing:border-box;overflow-wrap:anywhere;}

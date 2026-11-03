@@ -16,3 +16,9 @@ if (class_exists(\core\hook\output\before_import_map_config::class)) {
     $callbacks[] = ['hook' => \core\hook\output\before_import_map_config::class,
         'callback' => [\local_menubuilder\local\primary_navigation_compat::class, 'before_import_map_config']];
 }
+
+// Product identity on native administration and upgrade surfaces.
+$callbacks[] = ['hook'=>\core\hook\output\before_standard_head_html_generation::class,
+    'callback'=>[\local_menubuilder\local\admin_branding::class,'head']];
+$callbacks[] = ['hook'=>\core\hook\output\before_http_headers::class,
+    'callback'=>[\local_menubuilder\local\admin_branding::class,'prepare']];
