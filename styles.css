@@ -58,3 +58,6 @@
 
 #page-admin-local-menubuilder-menus .generaltable {min-width:48rem;}
 #page-admin-local-menubuilder-menus .generaltable td code {display:inline-block;min-width:12rem;max-width:22rem;word-break:normal;}
+
+/* Keep hidden action labels inside their scrolling table cell. */
+.local-menubuilder-icon-button {position:relative;}
