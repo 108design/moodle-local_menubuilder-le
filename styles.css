@@ -55,3 +55,6 @@
 
 .local-menubuilder-menu-navigation .dropdown-item.active {color:var(--bs-dropdown-link-active-color,#fff);}
 .local-menubuilder-menu-navigation button[aria-expanded="true"]>.local-menubuilder-menu-chevron {transform:rotate(180deg);}
+
+#page-admin-local-menubuilder-menus .generaltable {min-width:48rem;}
+#page-admin-local-menubuilder-menus .generaltable td code {display:inline-block;min-width:12rem;max-width:22rem;word-break:normal;}
