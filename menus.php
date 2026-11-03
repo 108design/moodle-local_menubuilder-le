@@ -32,13 +32,13 @@ if (!module_authority::is_owner()) {
 }
 echo html_writer::div(get_string('managedmenusintro', 'local_menubuilder'), 'mb-3');
 echo html_writer::link(new moodle_url('/local/menubuilder/menu_edit.php'),
-    get_string('managedmenuadd', 'local_menubuilder'), ['class' => 'btn btn-primary mb-3']);
+    $OUTPUT->pix_icon('t/add','').get_string('managedmenuadd', 'local_menubuilder'), ['class' => 'btn btn-primary mb-3']);
 echo html_writer::tag('form',
-    html_writer::tag('label', get_string('search'), ['for' => 'menubuilder-search', 'class' => 'mr-2 me-2'])
-    . html_writer::empty_tag('input', ['type' => 'search', 'name' => 'q', 'id' => 'menubuilder-search',
-        'value' => $query, 'class' => 'form-control d-inline-block w-auto mr-2 me-2'])
-    . html_writer::tag('button', get_string('search'), ['type' => 'submit', 'class' => 'btn btn-secondary']),
-    ['method' => 'get', 'action' => $PAGE->url->out(false), 'class' => 'mb-4']);
+    html_writer::div(html_writer::tag('label',get_string('search'),['for'=>'menubuilder-search','class'=>'mb-1'])
+        .html_writer::empty_tag('input',['type'=>'search','name'=>'q','id'=>'menubuilder-search','value'=>$query,'class'=>'form-control']),
+        'local-menubuilder-search-field')
+    .html_writer::tag('button',$OUTPUT->pix_icon('a/search','').get_string('search'),['type'=>'submit','class'=>'btn btn-secondary']),
+    ['method'=>'get','action'=>$PAGE->url->out(false),'class'=>'local-menubuilder-searchbar mb-4']);
 $table = new html_table();
 $table->attributes['class'] = 'generaltable table table-hover w-100 mb-4';
 $table->head = [get_string('managedmenuname', 'local_menubuilder'), get_string('menukey', 'local_menubuilder'),
@@ -51,22 +51,25 @@ foreach ($repository->get_all() as $menu) {
         continue;
     }
     $edit = new moodle_url('/local/menubuilder/menu_edit.php', ['id' => $menu->id]);
-    $actions = html_writer::link($edit, get_string('edit'), ['class' => 'mr-2 me-2']);
+    $iconlink=static function(moodle_url $url,string $label,string $icon) use($OUTPUT): string {
+        return html_writer::link($url,$OUTPUT->pix_icon($icon,'').html_writer::span(s($label),'sr-only'),
+            ['class'=>'local-menubuilder-icon-button','title'=>$label,'aria-label'=>$label]);
+    };
+    $actions=$iconlink($edit,get_string('edit'),'t/edit');
     $actions .= html_writer::tag('form',
         html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'id', 'value' => $menu->id])
         . html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()])
-        . html_writer::tag('button', get_string('managedmenuduplicate', 'local_menubuilder'),
-            ['type' => 'submit', 'class' => 'btn btn-link p-0']),
+        . html_writer::tag('button',$OUTPUT->pix_icon('t/copy','').html_writer::span(get_string('managedmenuduplicate','local_menubuilder'),'sr-only'),
+            ['type'=>'submit','class'=>'local-menubuilder-icon-button','title'=>get_string('managedmenuduplicate','local_menubuilder'),'aria-label'=>get_string('managedmenuduplicate','local_menubuilder')]),
         ['method' => 'post', 'action' => (new moodle_url('/local/menubuilder/menu_duplicate.php'))->out(false),
-            'class' => 'd-inline-block mr-2 me-2']);
-    $actions .= html_writer::link(new moodle_url('/local/menubuilder/menu_delete.php', ['id' => $menu->id]),
-        get_string('delete'));
+            'class' => 'local-menubuilder-icon-form']);
+    $actions .= $iconlink(new moodle_url('/local/menubuilder/menu_delete.php',['id'=>$menu->id]),get_string('delete'),'t/delete');
     $usage = $repository->usage((int)$menu->id);
     $table->data[] = [html_writer::link($edit, format_string($menu->name))
             . ($menu->description ? html_writer::div(s($menu->description), 'small text-muted') : ''),
         html_writer::tag('code', s($menu->definitionkey)),
         $usage ? html_writer::alist(array_map('s', $usage)) : get_string('menunoknownusage', 'local_menubuilder'),
-        userdate($menu->timemodified, get_string('strftimedatetimeshort', 'langconfig')), $actions];
+        userdate($menu->timemodified, get_string('strftimedatetimeshort', 'langconfig')), html_writer::div($actions,'local-menubuilder-table-actions')];
 }
 echo html_writer::div(html_writer::table($table), 'table-responsive');
 echo context_help::render();

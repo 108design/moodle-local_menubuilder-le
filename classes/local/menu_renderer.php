@@ -23,7 +23,7 @@ final class menu_renderer {
         $style = in_array($options['style'] ?? '', self::STYLES, true) ? $options['style'] : 'secondary';
         $padding = in_array($options['padding'] ?? '', self::PADDINGS, true) ? $options['padding'] : 'normal';
         return \html_writer::tag('nav', \html_writer::tag('ul', self::items($items, 0),
-            ['class' => 'nav local-menubuilder-menu-list']), ['class' => 'local-menubuilder-menu-navigation'
+            ['class' => 'nav local-menubuilder-menu-list']), ['class' => 'local-menubuilder-menu local-menubuilder-menu-navigation'
                 . ' local-menubuilder-menu-style-' . $style . ' local-menubuilder-menu-padding-' . $padding,
             'aria-label' => $options['label'] ?? get_string('navigation')]);
     }
@@ -51,7 +51,7 @@ final class menu_renderer {
                 $button = ['type' => 'button', 'aria-expanded' => 'false', 'aria-controls' => $id,
                     'aria-label' => get_string('menusubmenutoggle', 'local_menubuilder', html_to_text(format_string($item['label']), 0, false)),
                     'data-local-menubuilder-menu-toggle' => '1'];
-                $glyph = \html_writer::tag('i', '', ['class' => 'fa fa-chevron-down', 'aria-hidden' => 'true']);
+                $glyph = \html_writer::span(\html_writer::tag('i','',['class'=>'fa fa-chevron-down','aria-hidden'=>'true']),'local-menubuilder-menu-chevron',['aria-hidden'=>'true']);
                 if ($target === '') {
                     $control = \html_writer::tag('button', $label . $glyph, $button
                         + ['class' => $attributes['class'] . ' local-menubuilder-menu-parent-trigger']);
