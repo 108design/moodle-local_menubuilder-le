@@ -1,0 +1,15 @@
+/* Copyright 2026 Andreas Giesen. See LICENSE.md. */
+.primary-navigation .local-menubuilder-primary-nav-parent { display: flex; align-items: stretch; height: auto; min-height: 100%; }
+.primary-navigation .local-menubuilder-primary-nav-parent > .local-menubuilder-primary-nav-parent-link { padding-inline-end: .5rem; }
+.primary-navigation .local-menubuilder-primary-nav-toggle { display: inline-flex; align-items: center; justify-content: center; padding-inline: .75rem; background: transparent; border: 0; border-radius: 0; color: inherit; }
+.primary-navigation .local-menubuilder-primary-nav-toggle:not(.local-menubuilder-primary-nav-parent-trigger) { border-inline-start: 1px solid rgba(127,127,127,.25); }
+.primary-navigation .local-menubuilder-primary-nav-parent-trigger { gap: .65rem; }
+.primary-navigation .local-menubuilder-primary-nav-toggle:focus-visible { outline: 2px solid var(--bs-primary, #0f6cbf); outline-offset: -2px; }
+.primary-navigation [data-region="moredropdown"] > .local-menubuilder-primary-nav-parent { flex-wrap: wrap; height: auto !important; }
+.primary-navigation [data-region="moredropdown"] > .local-menubuilder-primary-nav-parent > a { flex: 1 1 auto; width: auto; }
+.primary-navigation [data-region="moredropdown"] > .local-menubuilder-primary-nav-parent > .dropdown-menu { position: static; flex: 1 0 100%; box-shadow: none; margin: 0; padding-inline-start: .75rem; border: 0; border-inline-start: 2px solid rgba(127,127,127,.25); }
+.local-menubuilder-primary-nav-mobile-parent { display: flex; align-items: stretch; width: 100%; }
+.local-menubuilder-primary-nav-mobile-parent > .local-menubuilder-primary-nav-parent-link { flex: 1 1 auto; display: flex; align-items: center; min-height: 3rem; padding: .75rem; }
+.local-menubuilder-primary-nav-mobile-parent > .local-menubuilder-primary-nav-toggle { display: flex; align-items: center; justify-content: center; flex: 0 0 3rem; min-height: 3rem; padding: .75rem; background: transparent; color: inherit; border: 0; border-inline-start: 1px solid rgba(127,127,127,.25); }
+.local-menubuilder-primary-nav-mobile-parent > .local-menubuilder-primary-nav-parent-trigger { justify-content: space-between; gap: .65rem; flex: 1 1 auto; text-align: start; border: 0; }
+.local-menubuilder-mobile-children { padding-inline-start: .5rem !important; }

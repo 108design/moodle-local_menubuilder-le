@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/menubuilder/db" VERSION="2026010100" COMMENT="XMLDB file for standalone Menu Builder">
+  <TABLES>
+    <TABLE NAME="local_menubuilder_menu" COMMENT="Canonical standalone menu definitions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="definitionkey" TYPE="char" LENGTH="100" NOTNULL="true"/>
+        <FIELD NAME="kind" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="menu"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false"/>
+        <FIELD NAME="definitionjson" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="version" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1"/>
+        <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="modifiedby" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
+      <INDEXES>
+        <INDEX NAME="definitionkey_uix" UNIQUE="true" FIELDS="definitionkey"/>
+        <INDEX NAME="name_ix" UNIQUE="false" FIELDS="name"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_menubuilder_place" COMMENT="Standalone menu placement and presentation assignments">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="menuid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="placementkey" TYPE="char" LENGTH="64" NOTNULL="true"/>
+        <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="configjson" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="version" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1"/>
+        <FIELD NAME="modifiedby" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="menu_fk" TYPE="foreign" FIELDS="menuid" REFTABLE="local_menubuilder_menu" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="menuplacement_uix" UNIQUE="true" FIELDS="menuid,placementkey"/>
+        <INDEX NAME="activeplacement_ix" UNIQUE="false" FIELDS="placementkey,enabled"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_menubuilder_menuasset" COMMENT="Validated image assets used by standalone menus">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="assetkey" TYPE="char" LENGTH="100" NOTNULL="true"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true"/>
+        <FIELD NAME="contenthash" TYPE="char" LENGTH="64" NOTNULL="true"/>
+        <FIELD NAME="mimetype" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="image/svg+xml"/>
+        <FIELD NAME="version" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1"/>
+        <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="modifiedby" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
+      <INDEXES>
+        <INDEX NAME="assetkey_uix" UNIQUE="true" FIELDS="assetkey"/>
+        <INDEX NAME="contenthash_uix" UNIQUE="true" FIELDS="contenthash"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
