@@ -49,3 +49,6 @@
 .local-menubuilder-icon-button:hover {color:var(--bs-primary,#0f6cbf);background:var(--bs-tertiary-bg,#f8f9fa);text-decoration:none;}
 .local-menubuilder-icon-button:focus-visible {outline:2px solid var(--bs-primary,#0f6cbf);outline-offset:2px;}
 @media(max-width:575.98px){.local-menubuilder-search-field{flex-basis:100%;}}
+
+.local-menubuilder-table-actions {flex-wrap:nowrap;min-width:max-content;}
+#page-admin-local-menubuilder-menus .generaltable td code {overflow-wrap:anywhere;word-break:break-word;white-space:normal;}
