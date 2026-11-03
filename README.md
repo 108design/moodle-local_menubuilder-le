@@ -10,7 +10,7 @@ Moodle 4.5 or later. Install the plugin at `local/menubuilder` and complete Mood
 
 Choose **Create Menu**, enter a name and edit the visible JSON. The help panel contains a complete example and documents each supported field. A definition supports up to 100 entries and three levels. Saving updates every use immediately. Conflicting edits require you to review the current version before saving again.
 
-**Add to Main Navigation** assigns one menu after Moodle’s existing entries. Assigning another menu changes that global assignment. Use the separately installed Frontpage menu block for compact vertical or wide horizontal output. With the Frontpage menu filter enabled, paste the displayed `[[frontpage-menu:your-menu-key]]` shortcode into Moodle content. Moodle and the theme determine available block regions and filtered text areas.
+**Add to Main Navigation** assigns one menu after Moodle’s existing entries. Assigning another menu changes that global assignment. Use the separately installed Frontpage menu block for compact vertical or wide horizontal output. With the Menu Builder shortcode filter enabled, paste the displayed `[[frontpage-menu:your-menu-key]]` shortcode into Moodle content. Moodle and the theme determine available block regions and filtered text areas.
 
 The stable menu key survives renaming and editing. A duplicate receives a new key and no active main navigation assignment. Known main navigation and configured block uses prevent deletion. Check text shortcodes separately: the usage list does not search all Moodle text fields. Missing menus render empty.
 

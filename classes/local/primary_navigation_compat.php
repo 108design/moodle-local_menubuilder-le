@@ -54,8 +54,9 @@ final class primary_navigation_compat {
     }
 
     public static function before_import_map_config(\core\hook\output\before_import_map_config $hook): void {
-        global $CFG;
-        if (!self::supported() || !self::owns_primary()) {
+        global $CFG, $DB;
+        // Asset routes bootstrap without a database; ownership is resolved on the page.
+        if (!($DB instanceof \moodle_database) || !self::supported() || !self::owns_primary()) {
             return;
         }
         // ESM asset requests do not share the page's placement/licensing context. Resolve this

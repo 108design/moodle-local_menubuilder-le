@@ -46,7 +46,7 @@ final class managed_menu_runtime {
                 'data-local-menubuilder-primary-nav-parent' => '1',
                 'data-local-menubuilder-primary-nav-url' => $url ? $url->out(false) : '',
                 'data-local-menubuilder-primary-nav-toggle-label' => get_string('menusubmenutoggle',
-                    'local_menubuilder', format_string($item['label'])),
+                    'local_menubuilder', html_to_text(format_string($item['label']), 0, false)),
                 // Native exporters flatten deeper levels. Carry only viewer-filtered rendered children.
                 'data-local-menubuilder-primary-nav-children' => $depth === 0
                     ? menu_renderer::branch_html($item['children']) : null,

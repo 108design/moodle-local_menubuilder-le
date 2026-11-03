@@ -49,7 +49,7 @@ final class menu_renderer {
             if ($item['children']) {
                 $id = 'local-menubuilder-resolved-submenu-' . ++self::$submenuid;
                 $button = ['type' => 'button', 'aria-expanded' => 'false', 'aria-controls' => $id,
-                    'aria-label' => get_string('menusubmenutoggle', 'local_menubuilder', format_string($item['label'])),
+                    'aria-label' => get_string('menusubmenutoggle', 'local_menubuilder', html_to_text(format_string($item['label']), 0, false)),
                     'data-local-menubuilder-menu-toggle' => '1'];
                 $glyph = \html_writer::tag('i', '', ['class' => 'fa fa-chevron-down', 'aria-hidden' => 'true']);
                 if ($target === '') {
