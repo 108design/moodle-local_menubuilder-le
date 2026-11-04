@@ -171,16 +171,13 @@ final class provider implements
         $files = $DB->get_records('files', [
             'contextid' => $context->id, 'component' => self::COMPONENT, 'userid' => $userid,
         ], 'filearea ASC, itemid ASC', 'id,filearea,itemid');
-        $seen = [];
-        foreach ($files as $file) {
-            $key = $file->filearea . ':' . $file->itemid;
-            if (isset($seen[$key])) {
-                continue;
+        foreach ($files as $metadata) {
+            $file = get_file_storage()->get_file_by_id($metadata->id);
+            if ($file && !$file->is_directory()) {
+                writer::with_context($context)->export_file([
+                    get_string('pluginname', self::COMPONENT), 'files', (string) $metadata->id,
+                ], $file);
             }
-            $seen[$key] = true;
-            writer::with_context($context)->export_area_files([
-                get_string('pluginname', self::COMPONENT), 'files', $key,
-            ], self::COMPONENT, $file->filearea, (int) $file->itemid);
         }
     }
 
@@ -205,6 +202,7 @@ final class provider implements
             $params += $userparams;
         }
         $DB->set_field_select('files', 'author', null, $select, $params);
+        $DB->set_field_select('files', 'source', null, $select, $params);
         $DB->set_field_select('files', 'userid', null, $select, $params);
     }
 }
