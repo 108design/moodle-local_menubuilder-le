@@ -117,3 +117,7 @@
 .local-menubuilder-mobile-children .local-menubuilder-menu-chevron .fa {transform:none;}
 .local-menubuilder-menu-navigation .dropdown-menu button[aria-expanded="true"] > .local-menubuilder-menu-chevron,
 .dropdown-menu.local-menubuilder-menu-navigation button[aria-expanded="true"] > .local-menubuilder-menu-chevron {transform:none;}
+
+/* Core scrolls navbar popups; managed desktop branches must be able to extend sideways. */
+.navbar.fixed-top .dropdown .dropdown-menu.local-menubuilder-menu-navigation,
+.navbar.fixed-top .dropdown .local-menubuilder-menu-navigation .dropdown-menu {overflow:visible;}
