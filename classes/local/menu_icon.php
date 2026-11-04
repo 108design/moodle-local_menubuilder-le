@@ -61,11 +61,9 @@ final class menu_icon {
         if ($value === null) {
             return '';
         }
-        if (self::pix_icon($value)) {
-            return \html_writer::empty_tag('img', [
-                'src' => $OUTPUT->image_url($value, 'core')->out(false),
-                'class' => 'icon', 'alt' => '', 'aria-hidden' => 'true',
-            ]);
+        $pixicon=self::pix_icon($value);
+        if ($pixicon) {
+            return $OUTPUT->render($pixicon);
         }
         preg_match('/^fa:(solid|brand):([a-z0-9][a-z0-9-]{0,79})$/D', $value, $match);
         return \html_writer::tag('i', '', ['class' => ($match[1] === 'brand' ? 'fab' : 'fa')

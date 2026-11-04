@@ -12,7 +12,7 @@ namespace local_menubuilder\local;
 final class admin_navigation {
     public static function render(string $active = 'menus'): string {
         return \html_writer::tag('nav', \html_writer::link(new \moodle_url('/local/menubuilder/menus.php'),
-            get_string('managedmenus', 'local_menubuilder'), ['class' => 'nav-link active', 'aria-current' => 'page']),
+            \html_writer::tag('i','',['class'=>'fa fa-bars icon','aria-hidden'=>'true']).' '.get_string('managedmenus', 'local_menubuilder'), ['class' => 'nav-link active', 'aria-current' => 'page']),
             ['class' => 'nav nav-tabs mb-4', 'aria-label' => get_string('pluginname', 'local_menubuilder')]);
     }
 }
