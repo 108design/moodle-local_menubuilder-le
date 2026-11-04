@@ -13,6 +13,19 @@ const setOpen = (dropdown, open) => {
     toggle.setAttribute('aria-expanded', String(open));
     menu.hidden = !open;
     menu.classList.toggle('show', open);
+    if (!open) dropdown.classList.remove('local-menubuilder-menu-flyout-start');
+    else positionFlyout(dropdown);
+};
+// Match desktop flyouts to the available viewport; inline mobile/block branches need no positioning.
+const positionFlyout = dropdown => {
+    dropdown.classList.remove('local-menubuilder-menu-flyout-start');
+    const menu = dropdown.querySelector(':scope > ul');
+    if (!menu || getComputedStyle(menu).position !== 'absolute'
+            || !dropdown.parentElement.closest('.dropdown-menu')) return;
+    const bounds = menu.getBoundingClientRect();
+    if (bounds.right > window.innerWidth - 8 && dropdown.getBoundingClientRect().left - bounds.width >= 8) {
+        dropdown.classList.add('local-menubuilder-menu-flyout-start');
+    }
 };
 const close = (root, except = null) => root.querySelectorAll('.local-menubuilder-menu-dropdown.is-open').forEach(d => {
     if (!except || (d !== except && !d.contains(except))) setOpen(d, false);
@@ -21,6 +34,9 @@ const controls = list => [...list.querySelectorAll(':scope > li > a, :scope > li
 export const init = () => {
     if (started) return;
     started = true;
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('.local-menubuilder-menu-dropdown.is-open').forEach(positionFlyout);
+    });
     document.addEventListener('click', event => {
         const root = event.target.closest('.local-menubuilder-menu-navigation');
         document.querySelectorAll('.local-menubuilder-menu-navigation').forEach(r => { if (!r.contains(event.target)) close(r); });
@@ -41,12 +57,12 @@ export const init = () => {
         if (!control) return;
         const dropdown = control.closest('.local-menubuilder-menu-dropdown');
         if (event.key === 'Escape') {
-            const open = dropdown?.classList.contains('is-open') ? dropdown : control.closest('ul')?.closest('.local-menubuilder-menu-dropdown');
+            const open = dropdown?.classList.contains('is-open') ? dropdown : control.closest('ul, .dropdown-menu')?.closest('.local-menubuilder-menu-dropdown');
             if (open) {
                 event.preventDefault(); event.stopPropagation(); setOpen(open, false); toggleFor(open)?.focus();
             }
         } else if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
-            const list = control.closest('ul');
+            const list = control.closest('ul, .dropdown-menu');
             const nodes = controls(list);
             const index = nodes.indexOf(control);
             if (!nodes.length) return;
@@ -58,7 +74,7 @@ export const init = () => {
             event.preventDefault(); event.stopPropagation(); setOpen(dropdown, true);
             controls(dropdown.querySelector(':scope > ul'))[0]?.focus();
         } else if (event.key === 'ArrowLeft') {
-            const owner = control.closest('ul')?.closest('.local-menubuilder-menu-dropdown');
+            const owner = control.closest('ul, .dropdown-menu')?.closest('.local-menubuilder-menu-dropdown');
             if (owner) { event.preventDefault(); event.stopPropagation(); setOpen(owner, false); toggleFor(owner)?.focus(); }
         }
     }, true);

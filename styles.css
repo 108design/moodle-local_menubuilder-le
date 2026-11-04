@@ -7,18 +7,14 @@
 .local-menubuilder-menu-dropdown { position: relative; }
 .local-menubuilder-menu-parent-control { display: flex; align-items: stretch; width: 100%; }
 .local-menubuilder-menu-parent-control > a { flex: 1 1 auto; }
-.local-menubuilder-menu-navigation :is(a, button) { color: inherit; }
 .local-menubuilder-menu-navigation .nav-link { padding: .625rem .875rem; }
 .local-menubuilder-menu-parent-trigger { display: flex; align-items: center; justify-content: space-between; gap: .65rem; width: 100%; text-align: start; border: 0; background: transparent; font: inherit; }
 .local-menubuilder-menu-submenu-toggle { flex: 0 0 2.5rem; border: 0; border-radius: 0; border-inline-start: 1px solid rgba(127,127,127,.2); color: inherit; background: transparent; }
 .local-menubuilder-menu-navigation .icon { margin-inline-end: .4rem; color: inherit; }
 .local-menubuilder-menu-navigation .dropdown-item { white-space: normal; min-width: 0; padding: .5rem 1rem; }
-.local-menubuilder-menu-navigation .local-menubuilder-menu-parent-control:is(:hover, :focus-within),
-.local-menubuilder-menu-navigation a:is(:hover, :focus-visible) { background-color: rgba(127,127,127,.13); text-decoration: none; }
 .local-menubuilder-menu-navigation :is(a, button):focus-visible { outline: 2px solid var(--bs-primary, #0f6cbf); outline-offset: -2px; }
 .local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown > ul { display: block; position: absolute; top: 100%; left: 0; min-width: 15rem; max-width: min(22rem, 90vw); z-index: 1050; color: var(--bs-body-color, #212529); background: var(--bs-body-bg, #fff); border: 1px solid rgba(127,127,127,.35); border-radius: .375rem; padding: .25rem 0; }
 .local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown > ul[hidden] { display: none !important; }
-.local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown .local-menubuilder-menu-dropdown > ul { position: static; margin-inline-start: .75rem; border: 0; border-inline-start: 2px solid rgba(127,127,127,.3); border-radius: 0; min-width: 0; }
 .local-menubuilder-menu-style-block .local-menubuilder-menu-list { display: block; }
 .local-menubuilder-menu-style-block .local-menubuilder-menu-list > li { display: block; }
 .local-menubuilder-menu-style-block .local-menubuilder-menu-dropdown > ul,
@@ -32,9 +28,59 @@
 .local-menubuilder-primary-nav-label { display: inline-flex; align-items: center; gap: .3em; }
 .local-menubuilder-primary-nav-label .icon { color: inherit; margin: 0; }
 
-/* Moodle's native top-level popup owns positioning; deeper branches expand inline. */
-.dropdown-menu.local-menubuilder-menu-navigation {position:absolute;width:min(22rem,calc(100vw - 2rem));min-width:min(18rem,calc(100vw - 2rem));max-width:calc(100vw - 2rem);box-sizing:border-box;}
-.dropdown-menu.local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown>ul {position:static;inset:auto;width:auto;min-width:0;max-width:none;margin-block:.15rem .4rem;margin-inline:1rem .5rem;border:0;border-inline-start:2px solid var(--bs-border-color,#dee2e6);border-radius:0;box-shadow:none;}
+/* Native dropdown colours stay together; desktop branches use the original flyout layout. */
+.dropdown-menu.local-menubuilder-menu-navigation,
+.local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown > ul {
+    width: max-content;
+    min-width: 10rem;
+    max-width: min(24rem, calc(100vw - 2rem));
+    box-sizing: border-box;
+    border-radius: 0 0 .5rem .5rem;
+    padding: .35rem 0;
+    overflow: visible;
+}
+.dropdown-menu.local-menubuilder-menu-navigation { position: absolute; }
+.local-menubuilder-menu-navigation .dropdown-menu > li,
+.dropdown-menu.local-menubuilder-menu-navigation > li { width: 100%; }
+.local-menubuilder-menu-navigation .dropdown-menu .local-menubuilder-menu-dropdown > ul,
+.dropdown-menu.local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown > ul {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin: 0;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0 .5rem .5rem 0;
+}
+.local-menubuilder-menu-navigation .local-menubuilder-menu-dropdown.local-menubuilder-menu-flyout-start > ul {
+    left: auto;
+    right: 100%;
+    border-radius: .5rem 0 0 .5rem;
+}
+.local-menubuilder-menu-navigation .local-menubuilder-menu-parent-control > :is(.dropdown-item, .local-menubuilder-menu-submenu-toggle) {
+    background: transparent;
+    color: inherit;
+}
+.local-menubuilder-menu-navigation .local-menubuilder-menu-parent-control:has(> .dropdown-item):is(:hover, :focus-within) {
+    background-color: var(--bs-dropdown-link-hover-bg, #0f6cbf);
+    color: var(--bs-dropdown-link-hover-color, #fff);
+}
+.local-menubuilder-menu-navigation .local-menubuilder-menu-parent-control:is(:hover, :focus-within) > :is(.dropdown-item, .local-menubuilder-menu-submenu-toggle) {
+    background: transparent;
+    color: inherit;
+}
+/* Only blocks and the native mobile drawer expand branches inline. */
+.local-menubuilder-menu-style-block .local-menubuilder-menu-dropdown > ul,
+.local-menubuilder-mobile-children .local-menubuilder-menu-dropdown > ul {
+    position: static;
+    inset: auto;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    margin-inline-start: .75rem;
+    border: 0;
+    border-inline-start: 2px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0;
+}
 .local-menubuilder-menu-navigation .local-menubuilder-menu-parent-trigger>.local-menubuilder-menu-item-text {flex:1 1 auto;min-width:0;white-space:normal;overflow-wrap:anywhere;text-align:start;}
 .local-menubuilder-menu-navigation .local-menubuilder-menu-parent-trigger>.local-menubuilder-menu-chevron {flex:0 0 auto;margin-inline-start:.65rem;}
 .local-menubuilder-menu-navigation .dropdown-item {box-sizing:border-box;overflow-wrap:anywhere;}
@@ -53,7 +99,7 @@
 .local-menubuilder-table-actions {flex-wrap:nowrap;min-width:max-content;}
 #page-admin-local-menubuilder-menus .generaltable td code {overflow-wrap:anywhere;word-break:break-word;white-space:normal;}
 
-.local-menubuilder-menu-navigation .dropdown-item.active {color:var(--bs-dropdown-link-active-color,#fff);}
+.local-menubuilder-menu-navigation .dropdown-item.active {background-color:var(--bs-dropdown-link-active-bg,#0f6cbf);color:var(--bs-dropdown-link-active-color,#fff);}
 .local-menubuilder-menu-navigation button[aria-expanded="true"]>.local-menubuilder-menu-chevron {transform:rotate(180deg);}
 
 #page-admin-local-menubuilder-menus .generaltable {min-width:48rem;}
@@ -61,3 +107,13 @@
 
 /* Keep hidden action labels inside their scrolling table cell. */
 .local-menubuilder-icon-button {position:relative;}
+
+/* Desktop chevrons point towards the actual opening side. */
+.local-menubuilder-menu-navigation .local-menubuilder-menu-chevron .fa {transform:none;}
+.local-menubuilder-menu-navigation:not(.local-menubuilder-menu-style-block):not(.local-menubuilder-mobile-children) .dropdown-menu .local-menubuilder-menu-chevron .fa,
+.dropdown-menu.local-menubuilder-menu-navigation .local-menubuilder-menu-chevron .fa {transform:rotate(-90deg);}
+.local-menubuilder-menu-navigation .local-menubuilder-menu-flyout-start > .local-menubuilder-menu-parent-control .local-menubuilder-menu-chevron .fa {transform:rotate(90deg);}
+.local-menubuilder-menu-style-block .local-menubuilder-menu-chevron .fa,
+.local-menubuilder-mobile-children .local-menubuilder-menu-chevron .fa {transform:none;}
+.local-menubuilder-menu-navigation .dropdown-menu button[aria-expanded="true"] > .local-menubuilder-menu-chevron,
+.dropdown-menu.local-menubuilder-menu-navigation button[aria-expanded="true"] > .local-menubuilder-menu-chevron {transform:none;}
