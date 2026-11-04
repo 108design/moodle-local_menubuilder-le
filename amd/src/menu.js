@@ -50,7 +50,8 @@ export const init = () => {
         close(root, dropdown);
         setOpen(dropdown, open);
     }, true);
-    document.addEventListener('keydown', event => {
+    // Handle only our menus before Bootstrap's document-level dropdown keyboard listener.
+    window.addEventListener('keydown', event => {
         const root = event.target.closest('.local-menubuilder-menu-navigation');
         if (!root) return;
         const control = event.target.closest('a, button');
