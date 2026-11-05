@@ -6,13 +6,21 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder;
 
 use local_menubuilder\local\managed_menu_definition as document;
 use local_menubuilder\local\menu_placement_definition as placement;
 
-/** Canonical input boundary, independent of the database. */
+/**
+ * Canonical input boundary, independent of the database.
+ */
 final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
+    /**
+     * Build the definition used by the test.
+     *
+     * @return array
+     */
     private function definition(): array {
         $d = document::empty();
         $d['items'][] = ['id' => 'root_item_01', 'depth' => 0, 'title' => 'Courses',
@@ -20,6 +28,11 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         return $d;
     }
 
+    /**
+     * Verify that roundtrip keeps IDs and defaults.
+     *
+     * @return void
+     */
     public function test_roundtrip_keeps_ids_and_defaults(): void {
         $d = document::decode(document::encode($this->definition(), true));
         $this->assertSame('root_item_01', $d['items'][0]['id']);
@@ -27,6 +40,11 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         $this->assertSame(document::default_visibility(), $d['items'][0]['visibility']);
     }
 
+    /**
+     * Provide invalid definitions for the validation cases.
+     *
+     * @return array
+     */
     public static function invalid_documents(): array {
         return [
             'system source' => ['source', ['type' => 'system', 'key' => 'myhome']],
@@ -47,7 +65,15 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         ];
     }
 
-    /** @dataProvider invalid_documents */
+    /**
+     * Verify that rejects invalid document fields.
+     *
+     * @dataProvider invalid_documents
+     *
+     * @param string $field Field name.
+     * @param mixed $value Input value to process.
+     * @return void
+     */
     #[\PHPUnit\Framework\Attributes\DataProvider('invalid_documents')]
     public function test_rejects_invalid_document_fields(string $field, mixed $value): void {
         $d = $this->definition();
@@ -56,6 +82,11 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         document::validate($d);
     }
 
+    /**
+     * Verify that depth count and duplicate limits.
+     *
+     * @return void
+     */
     public function test_depth_count_and_duplicate_limits(): void {
         $d = $this->definition();
         for ($i = 1; $i < 100; $i++) {
@@ -68,6 +99,11 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         document::validate($d);
     }
 
+    /**
+     * Verify that email anchor target and icons.
+     *
+     * @return void
+     */
     public function test_email_anchor_target_and_icons(): void {
         $d = $this->definition();
         $d['items'][0]['source'] = ['type' => 'external', 'url' => 'mailto:team@example.invalid?subject=Help'];
@@ -79,6 +115,11 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         $this->assertSame('i/course', document::validate($d)['items'][0]['icon']);
     }
 
+    /**
+     * Verify that placement rejects all alternative global options.
+     *
+     * @return void
+     */
     public function test_placement_rejects_all_alternative_global_options(): void {
         $this->assertSame('extend', placement::empty()['options']['topnavMode']);
         $p = placement::empty();
@@ -87,6 +128,11 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         placement::validate($p);
     }
 
+    /**
+     * Verify that replace is rejected.
+     *
+     * @return void
+     */
     public function test_replace_is_rejected(): void {
         $p = placement::empty();
         $p['options']['topnavMode'] = 'replace';
@@ -94,6 +140,11 @@ final class managed_menu_definition_test extends \PHPUnit\Framework\TestCase {
         placement::validate($p);
     }
 
+    /**
+     * Verify that invalid JSON has a specific error.
+     *
+     * @return void
+     */
     public function test_invalid_json_has_a_specific_error(): void {
         try {
             document::decode('{broken');

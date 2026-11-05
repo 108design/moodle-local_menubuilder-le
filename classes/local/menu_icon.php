@@ -6,10 +6,16 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder\local;
 
-/** Validated built-in Moodle and Font Awesome glyphs. */
+/**
+ * Validated built-in Moodle and Font Awesome glyphs.
+ */
 final class menu_icon {
+    /**
+     * Icons.
+     */
     private const ICONS = [
         'i/home' => ['home', 'fa-house'],
         'i/dashboard' => ['dashboard', 'fa-gauge'],
@@ -40,28 +46,50 @@ final class menu_icon {
     ];
 
 
+    /**
+     * Validate and normalise the supplied value.
+     *
+     * @param mixed $value Input value to process.
+     * @return string|null
+     */
     public static function normalise(mixed $value): ?string {
         if ($value === null || $value === '') {
             return null;
         }
-        if (!is_string($value) || (!isset(self::ICONS[$value])
-                && !preg_match('/^fa:(solid|brand):[a-z0-9][a-z0-9-]{0,79}$/D', $value))) {
-            throw new \invalid_parameter_exception('Use a supported Moodle pix identifier or fa:solid:name / fa:brand:name.');
+        if (
+            !is_string($value) || (!isset(self::ICONS[$value])
+                && !preg_match('/^fa:(solid|brand):[a-z0-9][a-z0-9-]{0,79}$/D', $value))
+        ) {
+            throw new \invalid_parameter_exception(
+                'Use a supported Moodle pix identifier or fa:solid:name / fa:brand:name.'
+            );
         }
         return $value;
     }
 
+    /**
+     * Construct the native icon for the validated menu icon definition.
+     *
+     * @param mixed $value Input value to process.
+     * @return \pix_icon|null
+     */
     public static function pix_icon(mixed $value): ?\pix_icon {
         return is_string($value) && isset(self::ICONS[$value]) ? new \pix_icon($value, '', 'core') : null;
     }
 
+    /**
+     * Render the validated menu icon as HTML.
+     *
+     * @param mixed $value Input value to process.
+     * @return string
+     */
     public static function render_html(mixed $value): string {
         global $OUTPUT;
         $value = self::normalise($value);
         if ($value === null) {
             return '';
         }
-        $pixicon=self::pix_icon($value);
+        $pixicon = self::pix_icon($value);
         if ($pixicon) {
             return $OUTPUT->render($pixicon);
         }

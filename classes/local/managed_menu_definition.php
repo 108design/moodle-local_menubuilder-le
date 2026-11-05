@@ -6,20 +6,49 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder\local;
 
-/** Validate the canonical menu before persistence and every runtime resolution. */
+/**
+ * Validate the canonical menu before persistence and every runtime resolution.
+ */
 final class managed_menu_definition {
+    /**
+     * Schema.
+     */
     public const SCHEMA = '108design-menubuilder/menu/1';
+    /**
+     * Kind.
+     */
     public const KIND = 'menu';
+    /**
+     * Max items.
+     */
     public const MAX_ITEMS = 100;
+    /**
+     * Max depth.
+     */
     public const MAX_DEPTH = 2;
+    /**
+     * Source types.
+     */
     public const SOURCE_TYPES = ['internal', 'external', 'container'];
 
+    /**
+     * Return an empty definition in the supported schema.
+     *
+     * @return array
+     */
     public static function empty(): array {
         return ['schema' => self::SCHEMA, 'kind' => self::KIND, 'items' => [], 'extensions' => []];
     }
 
+    /**
+     * Decode and validate the supported JSON definition.
+     *
+     * @param string|null $json Encoded JSON document.
+     * @return array
+     */
     public static function decode(?string $json): array {
         if ($json === null || trim($json) === '') {
             return self::empty();
@@ -34,12 +63,26 @@ final class managed_menu_definition {
         }
     }
 
+    /**
+     * Encode the validated definition in its canonical JSON form.
+     *
+     * @param array $definition Validated menu definition.
+     * @param bool $pretty Pretty.
+     * @return string
+     */
     public static function encode(array $definition, bool $pretty = false): string {
         return json_encode(self::validate($definition), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
             | ($pretty ? JSON_PRETTY_PRINT : 0) | JSON_THROW_ON_ERROR);
     }
 
-    /** Reject unknown fields rather than retaining executable data outside this schema. */
+    /**
+     * Reject unknown fields rather than retaining executable data outside this schema.
+     *
+     * @param mixed $value Input value to process.
+     * @param array $allowed Allowed.
+     * @param string $where Where.
+     * @return array
+     */
     public static function fields(mixed $value, array $allowed, string $where): array {
         if (!is_array($value)) {
             throw new \invalid_parameter_exception($where . ' must be an object.');
@@ -52,11 +95,19 @@ final class managed_menu_definition {
         return $value;
     }
 
+    /**
+     * Validate the supported definition fields and reject unknown options.
+     *
+     * @param mixed $definition Validated menu definition.
+     * @return array
+     */
     public static function validate(mixed $definition): array {
         self::fields($definition, ['schema', 'kind', 'items', 'extensions'], 'Menu');
-        if (($definition['schema'] ?? null) !== self::SCHEMA
+        if (
+            ($definition['schema'] ?? null) !== self::SCHEMA
                 || ($definition['kind'] ?? self::KIND) !== self::KIND
-                || !is_array($definition['items'] ?? null) || !array_is_list($definition['items'])) {
+                || !is_array($definition['items'] ?? null) || !array_is_list($definition['items'])
+        ) {
             throw new \invalid_parameter_exception('Expected a canonical menu document with an items list.');
         }
         self::no_extensions($definition['extensions'] ?? []);
@@ -71,14 +122,20 @@ final class managed_menu_definition {
             self::fields($raw, ['id', 'depth', 'title', 'showLabel', 'source', 'icon', 'target',
                 'visibility', 'presentation', 'extensions'], $where);
             $id = $raw['id'] ?? '';
-            if (!is_string($id) || !preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_-]{7,63}$/D', $id)
-                    || isset($ids[$id])) {
-                throw new \invalid_parameter_exception($where . ': use a unique ID of 8 to 64 letters, numbers, _ or -.');
+            if (
+                !is_string($id) || !preg_match('/^[a-zA-Z0-9][a-zA-Z0-9_-]{7,63}$/D', $id)
+                    || isset($ids[$id])
+            ) {
+                throw new \invalid_parameter_exception(
+                    $where . ': use a unique ID of 8 to 64 letters, numbers, _ or -.'
+                );
             }
             $ids[$id] = true;
             $depth = $raw['depth'] ?? null;
-            if (!is_int($depth) || $depth < 0 || $depth > self::MAX_DEPTH
-                    || ($index === 0 && $depth !== 0) || $depth > $previousdepth + 1) {
+            if (
+                !is_int($depth) || $depth < 0 || $depth > self::MAX_DEPTH
+                    || ($index === 0 && $depth !== 0) || $depth > $previousdepth + 1
+            ) {
                 throw new \invalid_parameter_exception($where . ': depth must be 0, 1 or 2; do not skip a level.');
             }
             $previousdepth = $depth;
@@ -107,19 +164,35 @@ final class managed_menu_definition {
         return $result;
     }
 
+    /**
+     * Reject extension data outside the supported definition schema.
+     *
+     * @param mixed $extensions Extensions.
+     * @return void
+     */
     private static function no_extensions(mixed $extensions): void {
         if ($extensions !== []) {
             throw new \invalid_parameter_exception('Menu extensions must be empty.');
         }
     }
 
+    /**
+     * Validate and normalise the menu item destination.
+     *
+     * @param mixed $raw Unprocessed input value.
+     * @return array
+     */
     private static function source(mixed $raw): array {
         self::fields($raw, ['type', 'url', 'key', 'extensions'], 'Source');
         $type = $raw['type'] ?? '';
         $url = $raw['url'] ?? '';
-        if (!in_array($type, self::SOURCE_TYPES, true) || !is_string($url)
-                || ($raw['key'] ?? '') !== '') {
-            throw new \invalid_parameter_exception('Source type must be internal, external or container; key must be empty.');
+        if (
+            !in_array($type, self::SOURCE_TYPES, true) || !is_string($url)
+                || ($raw['key'] ?? '') !== ''
+        ) {
+            throw new \invalid_parameter_exception(
+                'Source type must be internal, external or container; key must be empty.'
+            );
         }
         self::no_extensions($raw['extensions'] ?? []);
         $url = trim($url);
@@ -139,27 +212,44 @@ final class managed_menu_definition {
             }
         }
         if (!$valid) {
-            throw new \invalid_parameter_exception('Use a local /path or #anchor, an HTTP(S) or mailto link, or an empty container.');
+            throw new \invalid_parameter_exception(
+                'Use a local /path or #anchor, an HTTP(S) or mailto link, or an empty container.'
+            );
         }
         return ['type' => $type, 'key' => '', 'url' => $url, 'extensions' => []];
     }
 
+    /**
+     * Return the default menu visibility conditions.
+     *
+     * @return array
+     */
     public static function default_visibility(): array {
         return ['auth' => 'any', 'admin' => false, 'roles' => [], 'cohorts' => [], 'extensions' => []];
     }
 
+    /**
+     * Validate the menu item's authentication, role and cohort conditions.
+     *
+     * @param mixed $raw Unprocessed input value.
+     * @return array
+     */
     private static function visibility(mixed $raw): array {
         self::fields($raw, ['auth', 'admin', 'roles', 'cohorts', 'extensions'], 'Visibility');
         $result = self::default_visibility();
         $result['auth'] = $raw['auth'] ?? 'any';
         $result['admin'] = $raw['admin'] ?? false;
         if (!in_array($result['auth'], ['any', 'guest', 'authenticated'], true) || !is_bool($result['admin'])) {
-            throw new \invalid_parameter_exception('Visibility requires auth any/guest/authenticated and an admin boolean.');
+            throw new \invalid_parameter_exception(
+                'Visibility requires auth any/guest/authenticated and an admin boolean.'
+            );
         }
         foreach (['roles', 'cohorts'] as $key) {
             $values = $raw[$key] ?? [];
             if (!is_array($values) || !array_is_list($values) || count($values) > 100) {
-                throw new \invalid_parameter_exception('Visibility ' . $key . ' must be a list of at most 100 references.');
+                throw new \invalid_parameter_exception(
+                    'Visibility ' . $key . ' must be a list of at most 100 references.'
+                );
             }
             foreach ($values as $value) {
                 if (!is_string($value) || trim($value) === '' || \core_text::strlen($value) > 255) {
@@ -173,6 +263,12 @@ final class managed_menu_definition {
         return $result;
     }
 
+    /**
+     * Build the nested menu tree from the validated flat item list.
+     *
+     * @param array $definition Validated menu definition.
+     * @return array
+     */
     public static function tree(array $definition): array {
         $definition = self::validate($definition);
         $roots = [];

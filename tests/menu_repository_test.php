@@ -6,14 +6,22 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder;
 
 use local_menubuilder\local\managed_menu_definition as document;
 use local_menubuilder\local\module_authority;
 use local_menubuilder\local\persistence\menu_repository;
 
-/** Native state, permission, identity and optimistic write checks. */
+/**
+ * Native state, permission, identity and optimistic write checks.
+ */
 final class menu_repository_test extends \advanced_testcase {
+    /**
+     * Prepare the isolated native fixtures for the test.
+     *
+     * @return void
+     */
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
@@ -22,6 +30,11 @@ final class menu_repository_test extends \advanced_testcase {
         unset_config('frontpagemigrationcompleted', 'local_menubuilder');
     }
 
+    /**
+     * Verify that switch duplicate edit and IDentity.
+     *
+     * @return void
+     */
     public function test_switch_duplicate_edit_and_identity(): void {
         global $DB;
         $repo = new menu_repository($DB);
@@ -39,6 +52,11 @@ final class menu_repository_test extends \advanced_testcase {
         $this->assertSame($first->id, $saved->id);
     }
 
+    /**
+     * Verify that conflict rolls back all placements.
+     *
+     * @return void
+     */
     public function test_conflict_rolls_back_all_placements(): void {
         global $DB;
         $repo = new menu_repository($DB);
@@ -55,6 +73,11 @@ final class menu_repository_test extends \advanced_testcase {
         $this->assertSame('B', $repo->get($b->id)->name);
     }
 
+    /**
+     * Verify that no menu count limit and batched listing.
+     *
+     * @return void
+     */
     public function test_no_menu_count_limit_and_batched_listing(): void {
         global $DB;
         $repo = new menu_repository($DB);
@@ -66,6 +89,11 @@ final class menu_repository_test extends \advanced_testcase {
         $this->assertSame(2, $DB->perf_get_queries() - $before);
     }
 
+    /**
+     * Verify that runtime and writes do not require activation.
+     *
+     * @return void
+     */
     public function test_runtime_and_writes_do_not_require_activation(): void {
         global $DB;
         unset_config('activationid', 'local_menubuilder');
@@ -75,6 +103,11 @@ final class menu_repository_test extends \advanced_testcase {
         $this->assertSame('Allowed', $repo->get_by_key($record->definitionkey)->name);
     }
 
+    /**
+     * Verify that unprivileged writes are denied.
+     *
+     * @return void
+     */
     public function test_unprivileged_writes_are_denied(): void {
         global $DB;
         $this->setUser($this->getDataGenerator()->create_user());
@@ -82,6 +115,11 @@ final class menu_repository_test extends \advanced_testcase {
         (new menu_repository($DB))->save(null, 'Denied', '', false, document::encode(document::empty()), 0, 2);
     }
 
+    /**
+     * Verify that existing other ownership is not taken over.
+     *
+     * @return void
+     */
     public function test_existing_other_ownership_is_not_taken_over(): void {
         set_config('moduleowner', 'local_frontpage', 'local_menubuilder');
         module_authority::initialise();
@@ -89,6 +127,11 @@ final class menu_repository_test extends \advanced_testcase {
         $this->assertFalse(\local_menubuilder\local\gate::allows_authoring());
     }
 
+    /**
+     * Verify that active placement blocks deletion.
+     *
+     * @return void
+     */
     public function test_active_placement_blocks_deletion(): void {
         global $DB;
         $repo = new menu_repository($DB);
@@ -98,6 +141,11 @@ final class menu_repository_test extends \advanced_testcase {
         $repo->delete($record->id);
     }
 
+    /**
+     * Verify that configured block blocks deletion then missing menu renders empty.
+     *
+     * @return void
+     */
     public function test_configured_block_blocks_deletion_then_missing_menu_renders_empty(): void {
         global $DB, $PAGE;
         if (!get_config('block_frontpage_menu', 'version')) {
@@ -106,7 +154,10 @@ final class menu_repository_test extends \advanced_testcase {
         $PAGE->set_url('/');
         $repo = new menu_repository($DB);
         $record = $repo->save(null, 'Used', '', false, document::encode(document::empty()), 0, 2);
-        $block = $this->getDataGenerator()->create_block('frontpage_menu', ['parentcontextid' => \context_system::instance()->id]);
+        $block = $this->getDataGenerator()->create_block(
+            'frontpage_menu',
+            [ 'parentcontextid' => \context_system::instance()->id ]
+        );
         $DB->set_field('block_instances', 'configdata', base64_encode(serialize((object)[
             'menusource' => 'central:' . $record->definitionkey])), ['id' => $block->id]);
         $this->assertCount(1, $repo->usage_details($record->id));

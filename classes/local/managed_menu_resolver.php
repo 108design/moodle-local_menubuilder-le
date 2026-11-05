@@ -6,14 +6,29 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder\local;
 
-/** Resolve only validated entries visible to the current viewer. */
+/**
+ * Resolve only validated entries visible to the current viewer.
+ */
 final class managed_menu_resolver {
+    /**
+     * Resolve the validated menu for the current viewer.
+     *
+     * @param array $definition Validated menu definition.
+     * @return array
+     */
     public static function resolve(array $definition): array {
         return module_authority::is_owner() ? self::items(managed_menu_definition::tree($definition)) : [];
     }
 
+    /**
+     * Resolve menu items permitted for the current viewer.
+     *
+     * @param array $items Validated items to process.
+     * @return array
+     */
     private static function items(array $items): array {
         global $PAGE;
         $result = [];
@@ -42,7 +57,12 @@ final class managed_menu_resolver {
         return $result;
     }
 
-    /** Respect an installed destination's existing access policy. */
+    /**
+     * Respect an installed destination's existing access policy.
+     *
+     * @param array $item Item to process.
+     * @return bool
+     */
     private static function destination_visible(array $item): bool {
         $url = $item['source']['url'];
         return !str_starts_with($url, '/local/storefront/')

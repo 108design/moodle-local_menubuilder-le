@@ -6,6 +6,7 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder;
 
 use local_menubuilder\local\managed_menu_definition as document;
@@ -13,7 +14,15 @@ use local_menubuilder\local\managed_menu_runtime as runtime;
 use local_menubuilder\local\menu_placement_definition as placement;
 use local_menubuilder\local\persistence\menu_repository;
 
+/**
+ * Regression tests for topnav.
+ */
 final class topnav_test extends \advanced_testcase {
+    /**
+     * Prepare the isolated native fixtures for the test.
+     *
+     * @return void
+     */
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
@@ -23,15 +32,25 @@ final class topnav_test extends \advanced_testcase {
         set_config('moduleowner', 'local_menubuilder', 'local_menubuilder');
     }
 
+    /**
+     * Build the definition used by the test.
+     *
+     * @return array
+     */
     private function definition(): array {
         $d = document::empty();
         foreach ([0, 1, 2] as $depth) {
             $d['items'][] = ['id' => 'native_item_' . $depth, 'depth' => $depth, 'title' => 'Level ' . $depth,
-                'source' => $depth === 0 ? ['type' => 'container'] : ['type' => 'internal', 'url' => '/course/index.php']];
+                'source' => $depth === 0 ? [ 'type' => 'container' ] : [ 'type' => 'internal', 'url' => '/course/index.php' ]];
         }
         return $d;
     }
 
+    /**
+     * Verify that only appends and preserves native nodes and custom config.
+     *
+     * @return void
+     */
     public function test_only_appends_and_preserves_native_nodes_and_custom_config(): void {
         global $CFG;
         $CFG->custommenuitems = 'Native custom|/native';
@@ -41,8 +60,10 @@ final class topnav_test extends \advanced_testcase {
             $native[$key] = $primary->add('Native ' . $key, '/my/', \navigation_node::TYPE_CUSTOM, null, $key);
         }
         runtime::apply_primary($primary, $this->definition(), placement::empty());
-        $this->assertSame([...array_keys($native), 'local_menubuilder_menu_native_item_0'],
-            array_values(array_map(static fn($n) => $n->key, iterator_to_array($primary->children))));
+        $this->assertSame(
+            [...array_keys($native), 'local_menubuilder_menu_native_item_0'],
+            array_values(array_map(static fn($n) => $n->key, iterator_to_array($primary->children)))
+        );
         foreach ($native as $key => $node) {
             $this->assertSame($node, $primary->children->get($key));
             $this->assertSame('Native ' . $key, $node->text);
@@ -53,6 +74,11 @@ final class topnav_test extends \advanced_testcase {
         $this->assertCount(1, $root->children->get('local_menubuilder_menu_native_item_1')->children);
     }
 
+    /**
+     * Verify that invalid runtime document does not change native nodes.
+     *
+     * @return void
+     */
     public function test_invalid_runtime_document_does_not_change_native_nodes(): void {
         $primary = new \navigation_node(['text' => 'Root']);
         $native = $primary->add('Native home', '/', \navigation_node::TYPE_CUSTOM, null, 'home');
@@ -67,6 +93,11 @@ final class topnav_test extends \advanced_testcase {
         }
     }
 
+    /**
+     * Verify that filter reuses same key and resolves current definition.
+     *
+     * @return void
+     */
     public function test_filter_reuses_same_key_and_resolves_current_definition(): void {
         global $DB;
         if (!get_config('filter_frontpage_menu', 'version')) {
@@ -86,23 +117,42 @@ final class topnav_test extends \advanced_testcase {
         $this->assertSame('', $filter->filter('[[frontpage-menu:missing_menu]]'));
     }
 
+    /**
+     * Verify that block facade uses standalone and same reference.
+     *
+     * @return void
+     */
     public function test_block_facade_uses_standalone_and_same_reference(): void {
         global $DB;
         if (!get_config('block_frontpage_menu', 'version')) {
             $this->markTestSkipped('Requires the menu block companion.');
         }
-        $record = (new menu_repository($DB))->save(null, 'Shared', '', false,
-            document::encode($this->definition()), 0, 2);
+        $record = (new menu_repository($DB))->save(
+            null,
+            'Shared',
+            '',
+            false,
+            document::encode($this->definition()),
+            0,
+            2
+        );
         $this->assertSame('local_menubuilder', \block_frontpage_menu\local\authority::component());
         foreach (['central:', 'standalone:central:'] as $prefix) {
             $info = \block_frontpage_menu\local\authority::source_info($prefix . $record->definitionkey);
             $this->assertSame('local_menubuilder', $info['authority']);
-            $html = \block_frontpage_menu\local\authority::render_source($prefix . $record->definitionkey,
-                ['style' => 'block', 'padding' => 'compact']);
+            $html = \block_frontpage_menu\local\authority::render_source(
+                $prefix . $record->definitionkey,
+                ['style' => 'block', 'padding' => 'compact']
+            );
             $this->assertStringContainsString('Level 2', $html);
         }
     }
 
+    /**
+     * Verify that empty conditionally filtered container disappears.
+     *
+     * @return void
+     */
     public function test_empty_conditionally_filtered_container_disappears(): void {
         $this->setGuestUser();
         $d = $this->definition();
@@ -110,6 +160,11 @@ final class topnav_test extends \advanced_testcase {
         $this->assertSame([], \local_menubuilder\local\managed_menu_resolver::resolve($d));
     }
 
+    /**
+     * Verify that native block editors can select without central menu management.
+     *
+     * @return void
+     */
     public function test_native_block_editors_can_select_without_central_menu_management(): void {
         if (!get_config('block_frontpage_menu', 'version')) {
             $this->markTestSkipped('Requires the menu block companion.');
@@ -120,6 +175,11 @@ final class topnav_test extends \advanced_testcase {
         $this->assertTrue(\local_menubuilder\local\authority::source_selection_available());
     }
 
+    /**
+     * Verify that new window attributes and escaped labels.
+     *
+     * @return void
+     */
     public function test_new_window_attributes_and_escaped_labels(): void {
         $d = $this->definition();
         $d['items'][2]['title'] = '<script>alert(1)</script>Visible';

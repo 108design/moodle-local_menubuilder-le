@@ -1,24 +1,27 @@
 <?php
 /**
- * This file is part of a 108design source-available software product.
- *
- * Use and modification are permitted only under the Software License included
- * with this distribution. See LICENSE.md for the full terms.
- *
- * File documentation for tests/managed_menu_visibility_test.php.
+ * Regression tests for managed menu visibility.
  *
  * @package   local_menubuilder
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license   108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder;
 
 use local_menubuilder\local\managed_menu_definition;
 use local_menubuilder\local\managed_menu_runtime;
 use local_menubuilder\local\managed_menu_resolver;
 
-/** Real user/role/cohort fixtures for the shared menu visibility boundary. */
+/**
+ * Real user/role/cohort fixtures for the shared menu visibility boundary.
+ */
 final class managed_menu_visibility_test extends \advanced_testcase {
+    /**
+     * Prepare the isolated native fixtures for the test.
+     *
+     * @return void
+     */
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
@@ -28,6 +31,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         set_config('moduleowner', 'local_menubuilder', 'local_menubuilder');
     }
 
+    /**
+     * Verify that site admin needs no role or cohort membership.
+     *
+     * @return void
+     */
     public function test_site_admin_needs_no_role_or_cohort_membership(): void {
         $this->setAdminUser();
         $cohort = $this->getDataGenerator()->create_cohort(['idnumber' => 'menu-restricted']);
@@ -41,6 +49,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         }
     }
 
+    /**
+     * Verify that site admin still obeys guest only login condition.
+     *
+     * @return void
+     */
     public function test_site_admin_still_obeys_guest_only_login_condition(): void {
         $this->setAdminUser();
         $conditions = managed_menu_definition::default_visibility();
@@ -48,6 +61,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         $this->assertFalse(managed_menu_runtime::conditions_match($conditions));
     }
 
+    /**
+     * Verify that non admin role and cohort filters remain conjunctive.
+     *
+     * @return void
+     */
     public function test_non_admin_role_and_cohort_filters_remain_conjunctive(): void {
         global $DB;
         $user = $this->getDataGenerator()->create_user();
@@ -66,6 +84,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         $this->assertFalse(managed_menu_runtime::conditions_match($conditions));
     }
 
+    /**
+     * Verify that course role does not count as system role.
+     *
+     * @return void
+     */
     public function test_course_role_does_not_count_as_system_role(): void {
         global $DB;
         $course = $this->getDataGenerator()->create_course();
@@ -78,6 +101,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         $this->assertFalse(managed_menu_runtime::conditions_match($conditions));
     }
 
+    /**
+     * Verify that admin only does not admit non admin manager.
+     *
+     * @return void
+     */
     public function test_admin_only_does_not_admit_non_admin_manager(): void {
         global $DB;
         $user = $this->getDataGenerator()->create_user();
@@ -90,6 +118,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         $this->assertFalse(managed_menu_runtime::conditions_match($conditions));
     }
 
+    /**
+     * Verify that guest cannot pass authenticated condition.
+     *
+     * @return void
+     */
     public function test_guest_cannot_pass_authenticated_condition(): void {
         $this->setGuestUser();
         $conditions = managed_menu_definition::default_visibility();
@@ -97,6 +130,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         $this->assertFalse(managed_menu_runtime::conditions_match($conditions));
     }
 
+    /**
+     * Verify that admin passes restricted parent and child in content menu.
+     *
+     * @return void
+     */
     public function test_admin_passes_restricted_parent_and_child_in_content_menu(): void {
         $this->setAdminUser();
         $definition = $this->restricted_tree();
@@ -105,6 +143,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         $this->assertCount(1, $content[0]['children']);
     }
 
+    /**
+     * Verify that non admin cannot bypass restricted parent.
+     *
+     * @return void
+     */
     public function test_non_admin_cannot_bypass_restricted_parent(): void {
         $this->setUser($this->getDataGenerator()->create_user());
         $definition = $this->restricted_tree();
@@ -112,6 +155,11 @@ final class managed_menu_visibility_test extends \advanced_testcase {
         $this->assertSame([], managed_menu_resolver::resolve($definition));
     }
 
+    /**
+     * Build a menu tree with restricted parent and child entries.
+     *
+     * @return array
+     */
     private function restricted_tree(): array {
         $definition = managed_menu_definition::empty();
         foreach ([0, 1] as $depth) {

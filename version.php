@@ -6,6 +6,7 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_menubuilder';

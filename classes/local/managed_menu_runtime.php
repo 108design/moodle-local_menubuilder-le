@@ -6,10 +6,21 @@
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license 108design source-available software license; see LICENSE.md
  */
+
 namespace local_menubuilder\local;
 
-/** Append authored nodes without capturing, hiding or editing native Moodle nodes. */
+/**
+ * Append authored nodes without capturing, hiding or editing native Moodle nodes.
+ */
 final class managed_menu_runtime {
+    /**
+     * Append viewer-filtered menu nodes without replacing native navigation.
+     *
+     * @param \navigation_node $primary Primary.
+     * @param array $definition Validated menu definition.
+     * @param array $placement Menu placement settings.
+     * @return void
+     */
     public static function apply_primary(\navigation_node $primary, array $definition, array $placement = []): void {
         if (!module_authority::is_owner()) {
             return;
@@ -27,6 +38,14 @@ final class managed_menu_runtime {
         primary_navigation_compat::capture($primary);
     }
 
+    /**
+     * Append one managed item and its children to the navigation tree.
+     *
+     * @param \navigation_node $parent Parent record or structure.
+     * @param array $item Item to process.
+     * @param int $depth Current menu nesting depth.
+     * @return void
+     */
     private static function add_item(\navigation_node $parent, array $item, int $depth): void {
         global $PAGE;
         $url = $item['target'] === '' ? null : new \moodle_url($item['target']);
@@ -34,19 +53,27 @@ final class managed_menu_runtime {
             $url = new \moodle_url($PAGE->url);
             $url->set_anchor(substr($item['target'], 1));
         }
-        $text = $item['iconhtml'] . \html_writer::span(format_string($item['label']),
-            'local-menubuilder-primary-nav-text' . (!$item['showlabel'] ? ' sr-only visually-hidden' : ''));
+        $text = $item['iconhtml'] . \html_writer::span(
+            format_string($item['label']),
+            'local-menubuilder-primary-nav-text' . (!$item['showlabel'] ? ' sr-only visually-hidden' : '')
+        );
         $text = \html_writer::span($text, 'local-menubuilder-primary-nav-label');
         if ($item['linktarget'] === 'blank' && $url) {
-            $text = \html_writer::span($text, 'local-menubuilder-managed-menu-new-tab',
-                ['data-local-menubuilder-managed-menu-new-tab' => '1']);
+            $text = \html_writer::span(
+                $text,
+                'local-menubuilder-managed-menu-new-tab',
+                ['data-local-menubuilder-managed-menu-new-tab' => '1']
+            );
         }
         if ($item['children']) {
             $text = \html_writer::span($text, 'local-menubuilder-primary-nav-parent-marker', [
                 'data-local-menubuilder-primary-nav-parent' => '1',
                 'data-local-menubuilder-primary-nav-url' => $url ? $url->out(false) : '',
-                'data-local-menubuilder-primary-nav-toggle-label' => get_string('menusubmenutoggle',
-                    'local_menubuilder', html_to_text(format_string($item['label']), 0, false)),
+                'data-local-menubuilder-primary-nav-toggle-label' => get_string(
+                    'menusubmenutoggle',
+                    'local_menubuilder',
+                    html_to_text(format_string($item['label']), 0, false)
+                ),
                 // Native exporters flatten deeper levels. Carry only viewer-filtered rendered children.
                 'data-local-menubuilder-primary-nav-children' => $depth === 0
                     ? menu_renderer::branch_html($item['children']) : null,
@@ -63,6 +90,12 @@ final class managed_menu_runtime {
         }
     }
 
+    /**
+     * Evaluate menu visibility against the current login, roles and cohorts.
+     *
+     * @param array $conditions Conditions.
+     * @return bool
+     */
     public static function conditions_match(array $conditions): bool {
         global $DB, $USER;
         $authenticated = isloggedin() && !isguestuser();
@@ -98,15 +131,25 @@ final class managed_menu_runtime {
         if ($conditions['cohorts']) {
             [$insql, $params] = $DB->get_in_or_equal($conditions['cohorts'], SQL_PARAMS_NAMED, 'menucohort');
             $params['contextid'] = \context_system::instance()->id;
-            $cohortids = array_keys($DB->get_records_select('cohort', "idnumber $insql AND contextid = :contextid",
-                $params, '', 'id'));
+            $cohortids = array_keys($DB->get_records_select(
+                'cohort',
+                "idnumber $insql AND contextid = :contextid",
+                $params,
+                '',
+                'id'
+            ));
             if (!$cohortids) {
                 return false;
             }
             [$cohortsql, $cohortparams] = $DB->get_in_or_equal($cohortids, SQL_PARAMS_NAMED, 'menucohortid');
             $cohortparams['userid'] = $USER->id;
-            if (!$DB->record_exists_select('cohort_members', "userid = :userid AND cohortid $cohortsql",
-                    $cohortparams)) {
+            if (
+                !$DB->record_exists_select(
+                    'cohort_members',
+                    "userid = :userid AND cohortid $cohortsql",
+                    $cohortparams
+                )
+            ) {
                 return false;
             }
         }

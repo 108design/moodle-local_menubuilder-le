@@ -1,11 +1,12 @@
 <?php
 /**
- * File documentation for menu_duplicate.php.
+ * Native menu duplicate entry point for Menu Builder.
  *
  * @package   local_menubuilder
  * @copyright 2026 Andreas Giesen <andreas@108design.com>
  * @license   108design source-available software license; see LICENSE.md
  */
+
 // This file is part of a 108design source-available software product.
 require_once(__DIR__ . '/../../config.php');
 
@@ -29,6 +30,9 @@ $copy = $repository->duplicate(
     get_string('managedmenucopyname', 'local_menubuilder', (string) $source->name),
     (int) $USER->id
 );
-redirect(new moodle_url('/local/menubuilder/menu_edit.php', ['id' => $copy->id]),
-    get_string('managedmenuduplicated', 'local_menubuilder'), null,
-    \core\output\notification::NOTIFY_SUCCESS);
+redirect(
+    new moodle_url('/local/menubuilder/menu_edit.php', ['id' => $copy->id]),
+    get_string('managedmenuduplicated', 'local_menubuilder'),
+    null,
+    \core\output\notification::NOTIFY_SUCCESS
+);
