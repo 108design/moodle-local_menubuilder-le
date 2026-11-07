@@ -67,6 +67,9 @@ if ($saveerror !== '') {
     echo $OUTPUT->notification(s($saveerror), 'error');
 }
 if ($record) {
+    echo html_writer::start_tag('details', ['class' => 'local-menubuilder-use-details mb-4']);
+    echo html_writer::tag('summary', get_string('menuuse', 'local_menubuilder'));
+    echo html_writer::start_div('p-3');
     echo html_writer::tag('h3', get_string('menuuse', 'local_menubuilder'), ['class' => 'h5']);
     echo html_writer::div(html_writer::tag('code', s($record->definitionkey)), 'mb-2');
     echo html_writer::div(html_writer::tag('code', s('[[frontpage-menu:' . $record->definitionkey . ']]')), 'mb-3');
@@ -78,6 +81,7 @@ if ($record) {
     echo html_writer::tag('h3', get_string('menuusage', 'local_menubuilder'), ['class' => 'h5']);
     echo html_writer::div($usage ? html_writer::alist(array_map('s', $usage))
         : get_string('menunoknownusage', 'local_menubuilder'), 'mb-4');
+    echo html_writer::end_div() . html_writer::end_tag('details');
 }
 $form->display();
 echo context_help::render();

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libraries>
+    <library>
+        <location>thirdparty/codemirror-json</location>
+        <name>CodeMirror with JSON language support</name>
+        <version>6.0.2</version>
+        <license>MIT</license>
+        <licenseversion></licenseversion>
+    </library>
+</libraries>

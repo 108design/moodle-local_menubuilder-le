@@ -22,7 +22,15 @@ final class managed_menu_form extends \moodleform {
      * @return void
      */
     protected function definition(): void {
+        global $PAGE;
         $mform = $this->_form;
+        $labels = [];
+        foreach (['workspace', 'intro', 'preview', 'complete', 'entry', 'guidance', 'apply', 'discard',
+                'pending', 'resolve', 'entrynotice', 'empty', 'invalid', 'container', 'conflict',
+                'applied', 'entryinvalid'] as $key) {
+            $labels[$key] = get_string('jsoneditor' . $key, 'local_menubuilder');
+        }
+        $PAGE->requires->js_call_amd('local_menubuilder/menu_json_editor', 'init', [$labels]);
         $mform->addElement('text', 'name', get_string('managedmenuname', 'local_menubuilder'), ['maxlength' => 255]);
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('required'), 'required');

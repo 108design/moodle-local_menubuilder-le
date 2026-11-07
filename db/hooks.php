@@ -23,3 +23,10 @@ $callbacks[] = ['hook' => \core\hook\output\before_standard_head_html_generation
     'callback' => [\local_menubuilder\local\admin_branding::class, 'head']];
 $callbacks[] = ['hook' => \core\hook\output\before_http_headers::class,
     'callback' => [\local_menubuilder\local\admin_branding::class, 'prepare']];
+
+// Independent signed update-package guard.
+$callbacks[] = [
+    'hook' => \core\hook\after_config::class,
+    'callback' => [\local_menubuilder\local\update_guard::class, 'after_config'],
+    'priority' => 1002,
+];

@@ -20,16 +20,25 @@ final class admin_navigation {
      * @return string
      */
     public static function render(string $active = 'menus'): string {
-        return \html_writer::tag(
+        global $PAGE;
+        $list = basename($PAGE->url->get_path()) === 'menus.php';
+        $tabs = \html_writer::tag(
             'nav',
             \html_writer::link(
                 new \moodle_url('/local/menubuilder/menus.php'),
                 \html_writer::tag('i', '', [ 'class' => 'fa fa-bars icon', 'aria-hidden' => 'true' ])
                 . ' '
                 . get_string('managedmenus', 'local_menubuilder'),
-                ['class' => 'nav-link active', 'aria-current' => 'page']
+                ['class' => 'nav-link active', 'aria-current' => $list ? 'page' : null]
             ),
-            ['class' => 'nav nav-tabs mb-4', 'aria-label' => get_string('pluginname', 'local_menubuilder')]
+            ['class' => 'nav nav-tabs', 'aria-label' => get_string('pluginname', 'local_menubuilder')]
         );
+        $action = $list && module_authority::is_owner() ? \html_writer::link(
+            new \moodle_url('/local/menubuilder/menu_edit.php'),
+            \html_writer::tag('i', '', ['class' => 'fa fa-plus icon', 'aria-hidden' => 'true'])
+                . get_string('managedmenuadd', 'local_menubuilder'),
+            ['class' => 'btn btn-primary']
+        ) : '';
+        return \html_writer::div($tabs . $action, 'local-menubuilder-admin-navigation mb-4');
     }
 }

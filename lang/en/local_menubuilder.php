@@ -148,3 +148,50 @@ $string['pagehelp_menudelete_article'] = ('<p><strong>Known Uses</strong> lists 
     . 'removed with the definition; remaining shortcodes render empty.</p><p>Keep '
     . 'JSON copies or use your normal Moodle database backups when you need '
     . 'recovery. Saving a menu does not create a separate revision archive.</p>');
+
+// Shared independent signed update protection.
+$string['updateguard_heading'] = 'Update stopped';
+$string['updateguard_component'] = 'The package for {$a} was rejected.';
+$string['updateguard_hint'] = 'Use an approved package for the installed edition. You can review the operation again.';
+$string['updateguard_unchanged'] = 'This request did not replace plugin files.';
+$string['updateguard_help'] = 'The installed plugin checks the publisher signature, package contents, permitted update channel and compatibility before replacement. A valid signature does not authorise a different edition. If one package is rejected, the whole batch stops.';
+$string['updateguard_signature'] = 'The publisher signature or package contents could not be verified.';
+$string['updateguard_policy'] = 'This package does not match the installed edition or permitted package profile.';
+$string['updateguard_channel'] = 'Updates through this channel are not enabled for this plugin.';
+$string['updateguard_metadata'] = 'The version or dependency information is inconsistent.';
+$string['updateguard_dependency'] = 'A required plugin version is missing. Update the dependency together with this plugin or beforehand.';
+$string['updateguard_approval'] = 'The packages or installed state have changed since the preview. Review the operation again.';
+$string['updateguard_busy'] = 'Another installation is running. Try again after it finishes.';
+$string['updateguard_installed'] = 'The installed update protection is incomplete. Restore the files of the last approved installed version.';
+$string['updateguard_operation'] = 'This combination of installation actions is not supported. Start a single update operation again.';
+$string['updateguard_failed'] = 'The update could not be verified. No installation was started.';
+$string['updateguard_back'] = 'Return to plugin overview';
+// End shared independent signed update protection.
+
+$string['searchbarfilters'] = 'Filter';
+$string['searchbardisplay'] = 'Display';
+$string['searchbarreset'] = 'Reset';
+$string['searchbarremove'] = 'Remove {$a}';
+$string['searchbarerror'] = 'Results could not be updated. Your previous results are still shown.';
+$string['managerdateformat'] = '%d %b %Y, %H:%M';
+$string['uinoresults'] = 'No results match your search. Clear the search to see all menus.';
+$string['uinomenus'] = 'No menus yet. Use Create Menu to add your first JSON definition.';
+$string['searchbarmenus'] = 'Search menu names and keys …';
+$string['searchbarloading'] = 'Updating results …';
+$string['jsoneditorworkspace'] = 'Menu JSON Editor';
+$string['jsoneditorintro'] = 'Edit the complete JSON or select an existing entry in the structure preview. All changes remain in this form until you choose Save Changes.';
+$string['jsoneditorpreview'] = 'Structure Preview';
+$string['jsoneditorcomplete'] = 'Complete Menu JSON';
+$string['jsoneditorentry'] = 'Entry JSON';
+$string['jsoneditorguidance'] = 'Important keys: title is the label, source.url is the link, icon is the icon identifier and visibility controls who sees the entry. Keep the other fields unless you intend to change them.';
+$string['jsoneditorapply'] = 'Apply Entry JSON to Form';
+$string['jsoneditordiscard'] = 'Discard Entry Changes';
+$string['jsoneditorpending'] = 'Entry JSON changed. Apply it to the form or discard these changes before selecting another entry.';
+$string['jsoneditorresolve'] = 'Apply or discard the current entry changes first. Your text is still in the editor.';
+$string['jsoneditorentrynotice'] = 'This edits one existing entry as JSON. Save Changes validates and saves the complete menu.';
+$string['jsoneditorempty'] = 'No entries yet. Add entries in the complete JSON; the help panel contains an example.';
+$string['jsoneditorinvalid'] = 'The preview needs a JSON object with an items list. Correct the complete JSON to refresh it.';
+$string['jsoneditorcontainer'] = 'Submenu heading';
+$string['jsoneditorconflict'] = 'The complete JSON changed while this entry was open. Your entry text is preserved. Copy it before returning to the complete JSON.';
+$string['jsoneditorapplied'] = 'Entry applied to this form. Save Changes to update the menu.';
+$string['jsoneditorentryinvalid'] = 'Enter one valid JSON object for this entry.';

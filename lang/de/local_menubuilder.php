@@ -162,3 +162,50 @@ $string['pagehelp_menudelete_article'] = ('<p><strong>Bekannte Verwendungen</str
     . 'verbliebene Shortcodes bleiben leer.</p><p>Bewahre bei Bedarf JSON-Kopien auf '
     . 'oder nutze Deine regulären Moodle-Datenbanksicherungen. Das Speichern eines '
     . 'Menüs legt kein eigenes Revisionsarchiv an.</p>');
+
+// Shared independent signed update protection.
+$string['updateguard_heading'] = 'Update angehalten';
+$string['updateguard_component'] = 'Das Paket für {$a} wurde abgewiesen.';
+$string['updateguard_hint'] = 'Verwende ein freigegebenes Paket für die installierte Ausgabe. Du kannst den Vorgang erneut prüfen.';
+$string['updateguard_unchanged'] = 'Dieser Vorgang hat keine Plugin-Dateien ersetzt.';
+$string['updateguard_help'] = 'Das installierte Plugin prüft vor dem Ersetzen die Herausgebersignatur, den Paketinhalt, den erlaubten Updatekanal und die Kompatibilität. Eine gültige Signatur erlaubt keinen Wechsel auf eine andere Ausgabe. Wird ein Paket abgewiesen, stoppt die gesamte Sammelaktion.';
+$string['updateguard_signature'] = 'Die Herausgebersignatur oder der Paketinhalt konnte nicht bestätigt werden.';
+$string['updateguard_policy'] = 'Das Paket passt nicht zur installierten Ausgabe oder zum erlaubten Paketprofil.';
+$string['updateguard_channel'] = 'Updates über diesen Kanal sind für dieses Plugin nicht freigegeben.';
+$string['updateguard_metadata'] = 'Die Versions- oder Abhängigkeitsangaben sind nicht konsistent.';
+$string['updateguard_dependency'] = 'Eine benötigte Plugin-Version fehlt. Aktualisiere die Abhängigkeit gemeinsam mit diesem Plugin oder vorher.';
+$string['updateguard_approval'] = 'Die Pakete oder der installierte Stand haben sich seit der Vorschau geändert. Prüfe den Vorgang erneut.';
+$string['updateguard_busy'] = 'Eine andere Installation läuft. Versuche es nach deren Abschluss erneut.';
+$string['updateguard_installed'] = 'Der installierte Updateschutz ist unvollständig. Stelle die Dateien der zuletzt installierten freigegebenen Version wieder her.';
+$string['updateguard_operation'] = 'Diese Kombination von Installationsaktionen wird nicht unterstützt. Starte einen einzelnen Updatevorgang erneut.';
+$string['updateguard_failed'] = 'Das Update konnte nicht geprüft werden. Es wurde keine Installation gestartet.';
+$string['updateguard_back'] = 'Zur Pluginübersicht';
+// End shared independent signed update protection.
+
+$string['searchbarfilters'] = 'Filter';
+$string['searchbardisplay'] = 'Anzeige';
+$string['searchbarreset'] = 'Zurücksetzen';
+$string['searchbarremove'] = '{$a} entfernen';
+$string['searchbarerror'] = 'Die Ergebnisse konnten nicht aktualisiert werden. Die bisherigen Ergebnisse bleiben sichtbar.';
+$string['managerdateformat'] = '%d. %b %Y, %H:%M';
+$string['uinoresults'] = 'Keine passenden Ergebnisse. Setze die Suche zurück, um alle Menüs zu sehen.';
+$string['uinomenus'] = 'Noch keine Menüs. Lege über Menü anlegen Deine erste JSON-Definition an.';
+$string['searchbarmenus'] = 'Menünamen und Kennungen durchsuchen …';
+$string['searchbarloading'] = 'Ergebnisse werden aktualisiert …';
+$string['jsoneditorworkspace'] = 'Menü-JSON bearbeiten';
+$string['jsoneditorintro'] = 'Bearbeite das vollständige JSON oder wähle in der Strukturvorschau einen vorhandenen Eintrag aus. Erst Änderungen speichern übernimmt das Menü.';
+$string['jsoneditorpreview'] = 'Strukturvorschau';
+$string['jsoneditorcomplete'] = 'Vollständiges Menü-JSON';
+$string['jsoneditorentry'] = 'Eintrag-JSON';
+$string['jsoneditorguidance'] = 'Wichtige Schlüssel: title ist die Beschriftung, source.url das Linkziel, icon die Icon-Kennung und visibility die Sichtbarkeit. Lass die übrigen Felder stehen, wenn Du sie nicht gezielt ändern möchtest.';
+$string['jsoneditorapply'] = 'Eintrag-JSON ins Formular übernehmen';
+$string['jsoneditordiscard'] = 'Eintragsänderungen verwerfen';
+$string['jsoneditorpending'] = 'Eintrag-JSON geändert. Übernimm es ins Formular oder verwirf diese Änderungen, bevor Du einen anderen Eintrag wählst.';
+$string['jsoneditorresolve'] = 'Übernimm oder verwirf zuerst die aktuellen Eintragsänderungen. Dein Text bleibt im Editor erhalten.';
+$string['jsoneditorentrynotice'] = 'Hier bearbeitest Du einen vorhandenen Eintrag als JSON. Änderungen speichern prüft und speichert das vollständige Menü.';
+$string['jsoneditorempty'] = 'Noch keine Einträge. Ergänze Einträge im vollständigen JSON; ein Beispiel findest Du im Hilfepanel.';
+$string['jsoneditorinvalid'] = 'Die Vorschau benötigt ein JSON-Objekt mit einer items-Liste. Korrigiere das vollständige JSON, um sie zu aktualisieren.';
+$string['jsoneditorcontainer'] = 'Untermenü-Überschrift';
+$string['jsoneditorconflict'] = 'Das vollständige JSON wurde während dieser Eintragsbearbeitung geändert. Dein Text bleibt erhalten. Kopiere ihn, bevor Du zum vollständigen JSON zurückkehrst.';
+$string['jsoneditorapplied'] = 'Eintrag ins Formular übernommen. Änderungen speichern aktualisiert das Menü.';
+$string['jsoneditorentryinvalid'] = 'Gib für diesen Eintrag ein gültiges JSON-Objekt ein.';

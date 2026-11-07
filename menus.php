@@ -22,6 +22,7 @@ $PAGE->set_url('/local/menubuilder/menus.php');
 $PAGE->set_title(get_string('managedmenus', 'local_menubuilder'));
 $PAGE->set_heading(get_string('pluginname', 'local_menubuilder'));
 context_help::prepare('menus');
+$PAGE->requires->js_call_amd('local_menubuilder/search_managers', 'init');
 $query = trim(optional_param('q', '', PARAM_TEXT));
 echo $OUTPUT->header();
 echo admin_navigation::render();
@@ -32,39 +33,15 @@ if (!module_authority::is_owner()) {
     exit;
 }
 echo html_writer::div(get_string('managedmenusintro', 'local_menubuilder'), 'mb-3');
-echo html_writer::link(
-    new moodle_url('/local/menubuilder/menu_edit.php'),
-    $OUTPUT->pix_icon('t/add', '') . get_string('managedmenuadd', 'local_menubuilder'),
-    ['class' => 'btn btn-primary mb-3']
-);
-echo html_writer::tag(
-    'form',
-    html_writer::div(
-        html_writer::tag('label', get_string('search'), ['for' => 'menubuilder-search', 'class' => 'mb-1'])
-
-        . html_writer::empty_tag(
-            'input',
-            [
-            'type' => 'search',
-            'name' => 'q',
-            'id' => 'menubuilder-search',
-            'value' => $query,
-            'class' => 'form-control',
-            ]
-        ),
-        'local-menubuilder-search-field'
-    )
-
-        . html_writer::tag(
-            'button',
-            $OUTPUT->pix_icon('a/search', '') . get_string('search'),
-            [ 'type' => 'submit', 'class' => 'btn btn-secondary' ]
-        ),
-    ['method' => 'get', 'action' => $PAGE->url->out(false), 'class' => 'local-menubuilder-searchbar mb-4']
-);
+echo html_writer::start_div('', ['data-search-bar-scope' => 'local_menubuilder-menus']);
+echo \local_menubuilder\output\search_bar::controls($PAGE->url, [
+    'q' => ['label' => get_string('search'), 'value' => $query,
+        'placeholder' => get_string('searchbarmenus', 'local_menubuilder')],
+], 'local_menubuilder-menus');
+echo html_writer::start_div('', ['data-search-bar-results' => '1']);
 $table = new html_table();
 $table->attributes['class'] = 'generaltable table table-hover w-100 mb-4';
-$table->head = [get_string('managedmenuname', 'local_menubuilder'), get_string('menukey', 'local_menubuilder'),
+$table->head = [get_string('managedmenuname', 'local_menubuilder'),
     get_string('menuusage', 'local_menubuilder') . ' ' . context_help::icon('menudelete'),
     get_string('lastmodified'), get_string('actions')];
 $repository = factory::menu_repository();
@@ -111,12 +88,18 @@ foreach ($repository->get_all() as $menu) {
     );
     $usage = $repository->usage((int)$menu->id);
     $table->data[] = [html_writer::link($edit, format_string($menu->name))
+            . html_writer::div(html_writer::tag('code', s($menu->definitionkey)), 'local-menubuilder-list-key small')
             . ($menu->description ? html_writer::div(s($menu->description), 'small text-muted') : ''),
-        html_writer::tag('code', s($menu->definitionkey)),
         $usage ? html_writer::alist(array_map('s', $usage)) : get_string('menunoknownusage', 'local_menubuilder'),
-        userdate($menu->timemodified, get_string('strftimedatetimeshort', 'langconfig')),
+        userdate($menu->timemodified, get_string('managerdateformat', 'local_menubuilder')),
          html_writer::div($actions, 'local-menubuilder-table-actions')];
 }
-echo html_writer::div(html_writer::table($table), 'table-responsive');
+if ($table->data) {
+    echo html_writer::div(html_writer::table($table), 'table-responsive');
+} else {
+    echo html_writer::div(get_string($query === '' ? 'uinomenus' : 'uinoresults', 'local_menubuilder'),
+        'local-menubuilder-empty');
+}
+echo html_writer::end_div() . html_writer::end_div();
 echo context_help::render();
 echo $OUTPUT->footer();
