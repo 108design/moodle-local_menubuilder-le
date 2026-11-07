@@ -1,0 +1,1 @@
+Run `npm ci` and `node build.mjs` in this directory to rebuild the bundled JSON editor and its source map. The lockfile pins the build and runtime dependencies. No browser CDN is used. Keep generated AMD assets, source map and third-party licence notices together.

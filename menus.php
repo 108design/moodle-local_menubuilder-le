@@ -97,8 +97,10 @@ foreach ($repository->get_all() as $menu) {
 if ($table->data) {
     echo html_writer::div(html_writer::table($table), 'table-responsive');
 } else {
-    echo html_writer::div(get_string($query === '' ? 'uinomenus' : 'uinoresults', 'local_menubuilder'),
-        'local-menubuilder-empty');
+    echo html_writer::div(
+        get_string($query === '' ? 'uinomenus' : 'uinoresults', 'local_menubuilder'),
+        'local-menubuilder-empty'
+    );
 }
 echo html_writer::end_div() . html_writer::end_div();
 echo context_help::render();

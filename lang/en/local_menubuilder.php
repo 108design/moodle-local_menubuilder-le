@@ -65,7 +65,7 @@ $string['pagehelp_menubasics_article'] = ('<p>Use <strong>Create Menu</strong> t
     . 'reloading to resolve a conflict.</p>');
 $string['pagehelp_menujson'] = 'JSON Format and Examples';
 $string['pagehelp_menujson_help'] = 'Use the canonical schema, stable item IDs and depths 0 to 2. The panel contains a complete example.';
-$string['pagehelp_menujson_article'] = '<p>Copy the example into <strong>Menu JSON</strong> and adapt the titles and links. The document has an <code>items</code> list with up to 100 entries. Each ID must be unique and contain 8 to 64 letters, numbers, underscores or hyphens. IDs stay stable when editing. Depth starts at 0 and may increase by one level at a time, up to 2.</p><pre>{
+$string['pagehelp_menujson_article'] = '<p>The JSON editor highlights syntax and reports error positions. Select an entry in the read-only structure preview to edit that entry as JSON. Apply Entry JSON to Form updates the complete document in the form; Save changes saves the menu. Pending valid entry JSON is also applied when saving. Discard Entry Changes restores that entry from the complete document. Edit titles, source.url, icon and visibility in JSON; keep IDs stable. Adding, removing or reordering entries uses the complete JSON document.</p><p>Copy the example into <strong>Menu JSON</strong> and adapt the titles and links. The document has an <code>items</code> list with up to 100 entries. Each ID must be unique and contain 8 to 64 letters, numbers, underscores or hyphens. IDs stay stable when editing. Depth starts at 0 and may increase by one level at a time, up to 2.</p><pre>{
   "schema": "108design-menubuilder/menu/1",
   "kind": "menu",
   "items": [
@@ -179,7 +179,7 @@ $string['uinomenus'] = 'No menus yet. Use Create Menu to add your first JSON def
 $string['searchbarmenus'] = 'Search menu names and keys …';
 $string['searchbarloading'] = 'Updating results …';
 $string['jsoneditorworkspace'] = 'Menu JSON Editor';
-$string['jsoneditorintro'] = 'Edit the complete JSON or select an existing entry in the structure preview. All changes remain in this form until you choose Save Changes.';
+$string['jsoneditorintro'] = 'Edit the complete JSON or select an existing entry in the structure preview. All changes remain in this form until you choose Save changes.';
 $string['jsoneditorpreview'] = 'Structure Preview';
 $string['jsoneditorcomplete'] = 'Complete Menu JSON';
 $string['jsoneditorentry'] = 'Entry JSON';
@@ -188,10 +188,10 @@ $string['jsoneditorapply'] = 'Apply Entry JSON to Form';
 $string['jsoneditordiscard'] = 'Discard Entry Changes';
 $string['jsoneditorpending'] = 'Entry JSON changed. Apply it to the form or discard these changes before selecting another entry.';
 $string['jsoneditorresolve'] = 'Apply or discard the current entry changes first. Your text is still in the editor.';
-$string['jsoneditorentrynotice'] = 'This edits one existing entry as JSON. Save Changes validates and saves the complete menu.';
+$string['jsoneditorentrynotice'] = 'This edits one existing entry as JSON. Save changes validates and saves the complete menu.';
 $string['jsoneditorempty'] = 'No entries yet. Add entries in the complete JSON; the help panel contains an example.';
 $string['jsoneditorinvalid'] = 'The preview needs a JSON object with an items list. Correct the complete JSON to refresh it.';
 $string['jsoneditorcontainer'] = 'Submenu heading';
 $string['jsoneditorconflict'] = 'The complete JSON changed while this entry was open. Your entry text is preserved. Copy it before returning to the complete JSON.';
-$string['jsoneditorapplied'] = 'Entry applied to this form. Save Changes to update the menu.';
+$string['jsoneditorapplied'] = 'Entry applied to this form. Save changes to update the menu.';
 $string['jsoneditorentryinvalid'] = 'Enter one valid JSON object for this entry.';

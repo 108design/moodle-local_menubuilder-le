@@ -8,7 +8,7 @@ Moodle 4.5 or later. Install the plugin at `local/menubuilder` and complete Mood
 
 ## Create and use a menu
 
-Choose **Create Menu**, enter a name and edit the visible JSON. The help panel contains a complete example and documents each supported field. A definition supports up to 100 entries and three levels. Saving updates every use immediately. Conflicting edits require you to review the current version before saving again.
+Choose **Create Menu**, enter a name and edit the JSON with syntax highlighting and error positions. The read-only structure preview lets you select an existing entry and edit its JSON separately. **Apply Entry JSON to Form** updates the complete document in the form; **Save changes** saves the menu and also applies valid pending entry changes. Add, remove and reorder entries in the complete JSON document. The help panel contains a complete example and documents each supported field. A definition supports up to 100 entries and three levels. Saving updates every use immediately. Conflicting edits require you to review the current version before saving again.
 
 **Add to Main Navigation** assigns one menu after Moodle’s existing entries. Assigning another menu changes that global assignment. Use the separately installed Frontpage menu block for compact vertical or wide horizontal output. With the Menu Builder shortcode filter enabled, paste the displayed `[[frontpage-menu:your-menu-key]]` shortcode into Moodle content. Moodle and the theme determine available block regions and filtered text areas.
 
