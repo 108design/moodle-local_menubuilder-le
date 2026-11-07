@@ -122,7 +122,10 @@ $string['pagehelp_menuuse'] = 'Blöcke und Shortcodes';
 $string['pagehelp_menuuse_help'] = ('Verwende denselben stabilen Schlüssel in mehreren Menüblöcken oder '
     . 'gefilterten Texten. Ihre Verweise bleiben von der Hauptnavigationszuweisung '
     . 'unabhängig.');
-$string['pagehelp_menuuse_article'] = ('<p>Wähle das zentrale Menü in jedem <strong>Frontpage-Menü</strong>-Block '
+$string['pagehelp_menuuse_article'] = ('<p>Die beiden Plugins <strong>Frontpage-Menü</strong> '
+    . '(<code>block_frontpage_menu</code>) und <strong>Menü-Builder-Shortcode</strong> '
+    . '(<code>filter_frontpage_menu</code>) findest Du kostenlos auf GitHub und im Moodle Marketplace.</p>'
+    . '<p>Wähle das zentrale Menü in jedem <strong>Frontpage-Menü</strong>-Block '
     . 'aus. Kompakt ist vertikal, Breit ist horizontal. Wähle das Profil nach dem '
     . 'tatsächlich verfügbaren Platz Deines Themes.</p><p>Kopiere '
     . '<code>[[frontpage-menu:dein-menueschluessel]]</code> aus <strong>Menü '

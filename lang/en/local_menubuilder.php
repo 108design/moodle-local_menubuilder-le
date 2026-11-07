@@ -112,7 +112,10 @@ $string['pagehelp_menutopnav_article'] = ('<p><strong>Add to Main Navigation</st
 $string['pagehelp_menuuse'] = 'Blocks and Shortcodes';
 $string['pagehelp_menuuse_help'] = ('Reuse the same stable key in multiple menu blocks or filter-enabled texts. '
     . 'Their references remain independent of the main navigation assignment.');
-$string['pagehelp_menuuse_article'] = ('<p>Choose the central menu in each <strong>Frontpage menu</strong> block. '
+$string['pagehelp_menuuse_article'] = ('<p>The two companion plugins, <strong>Frontpage menu</strong> '
+    . '(<code>block_frontpage_menu</code>) and <strong>Menu Builder shortcode</strong> '
+    . '(<code>filter_frontpage_menu</code>), are available for free on GitHub and in the Moodle Marketplace.</p>'
+    . '<p>Choose the central menu in each <strong>Frontpage menu</strong> block. '
     . 'Compact is vertical; Wide is horizontal. Choose the profile to fit the actual '
     . 'space offered by your theme.</p><p>Copy '
     . '<code>[[frontpage-menu:your-menu-key]]</code> from <strong>Use This '
