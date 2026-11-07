@@ -60,14 +60,12 @@ const copyToggleAttributes = (source, target, type) => {
     target.style.setProperty('--local-menubuilder-primary-nav-control-color', controlcolor);
 };
 
-const desktopParent = marker => {
+const desktopParent = (marker, {url, label}) => {
     const opener = marker.closest([
         '.primary-navigation a.dropdown-toggle[data-toggle="dropdown"]',
         '.primary-navigation a.dropdown-toggle[data-bs-toggle="dropdown"]',
     ].join(','));
     if (!opener || opener.dataset.localMenubuilderParentEnhanced === 'true') return;
-    const url = marker.dataset.localMenubuilderPrimaryNavUrl || '';
-    const label = marker.dataset.localMenubuilderPrimaryNavToggleLabel || marker.textContent.trim();
     const item = opener.closest('.dropdown.nav-item');
     if (!item) return;
     item.closest('.more-nav')?.classList.add('local-menubuilder-managed-more-nav');
@@ -101,11 +99,9 @@ const desktopParent = marker => {
     refreshNativeOverflow();
 };
 
-const mobileParent = marker => {
+const mobileParent = (marker, {url, label}) => {
     const opener = marker.closest('a[data-toggle="collapse"], a[data-bs-toggle="collapse"]');
     if (!opener || opener.dataset.localMenubuilderParentEnhanced === 'true') return;
-    const url = marker.dataset.localMenubuilderPrimaryNavUrl || '';
-    const label = marker.dataset.localMenubuilderPrimaryNavToggleLabel || marker.textContent.trim();
     const group = document.createElement('div');
     group.className = 'local-menubuilder-primary-nav-mobile-parent';
     opener.closest('.drawer-primary')?.classList.add('local-menubuilder-managed-primary-drawer');
@@ -165,40 +161,43 @@ const mountChildren = (target, html) => {
 
 // Desktop and mobile export the same tree; each concrete disclosure needs its own DOM ID.
 // Carry the complete filtered subtree through Core's two-level desktop template.
-const restoreChildren = root => {
-    root.querySelectorAll('[data-local-menubuilder-primary-nav-children]').forEach(marker => {
-        if (marker.dataset.childrenRestored) return;
-        const html = marker.dataset.localMenubuilderPrimaryNavChildren;
-        if (!html) return;
-        const item = marker.closest('.dropdown.nav-item');
-        const desktop = item?.querySelector(':scope > .dropdown-menu');
-        if (desktop) {
-            mountChildren(desktop, html);
-            desktop.classList.add('local-menubuilder-menu-navigation');
-            marker.dataset.childrenRestored = '1';
-        } else {
-            const row = marker.closest('.local-menubuilder-primary-nav-mobile-parent');
-            const control = row?.querySelector('[aria-controls]');
-            const collapse = control && document.getElementById(control.getAttribute('aria-controls'));
-            if (collapse) {
-                const nav = document.createElement('ul');
-                nav.className = 'local-menubuilder-menu-navigation local-menubuilder-mobile-children';
-                mountChildren(nav, html);
-                collapse.replaceChildren(nav);
-                marker.dataset.childrenRestored = '1';
-            }
-        }
-    });
+const restoreChildren = (marker, html) => {
+    if (!html || marker.dataset.childrenRestored) return;
+    const item = marker.closest('.dropdown.nav-item');
+    const desktop = item?.querySelector(':scope > .dropdown-menu');
+    if (desktop) {
+        mountChildren(desktop, html);
+        desktop.classList.add('local-menubuilder-menu-navigation');
+        marker.dataset.childrenRestored = '1';
+        return;
+    }
+    const row = marker.closest('.local-menubuilder-primary-nav-mobile-parent');
+    const control = row?.querySelector('[aria-controls]');
+    const collapse = control && document.getElementById(control.getAttribute('aria-controls'));
+    if (collapse) {
+        const nav = document.createElement('ul');
+        nav.className = 'local-menubuilder-menu-navigation local-menubuilder-mobile-children';
+        mountChildren(nav, html);
+        collapse.replaceChildren(nav);
+        marker.dataset.childrenRestored = '1';
+    }
 };
 
 // Native navigation may move or remove a node before the observer callback runs.
 const enhance = root => {
     if (!root || !root.isConnected) return;
     root.querySelectorAll('[data-local-menubuilder-primary-nav-parent]').forEach(marker => {
-        desktopParent(marker);
-        mobileParent(marker);
+        let metadata;
+        try {
+            const bytes = Uint8Array.from(atob(marker.dataset.localMenubuilderPrimaryNavParent), char => char.charCodeAt(0));
+            metadata = JSON.parse(new TextDecoder().decode(bytes));
+        } catch {
+            return; // Leave native navigation usable if a cached marker uses an older format.
+        }
+        desktopParent(marker, metadata);
+        mobileParent(marker, metadata);
+        restoreChildren(marker, metadata.children);
     });
-    restoreChildren(root);
     initialiseMenus();
 };
 

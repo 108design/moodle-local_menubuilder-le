@@ -66,17 +66,20 @@ final class managed_menu_runtime {
             );
         }
         if ($item['children']) {
-            $text = \html_writer::span($text, 'local-menubuilder-primary-nav-parent-marker', [
-                'data-local-menubuilder-primary-nav-parent' => '1',
-                'data-local-menubuilder-primary-nav-url' => $url ? $url->out(false) : '',
-                'data-local-menubuilder-primary-nav-toggle-label' => get_string(
+            // Core 5.3 decodes entities in the entire label, including attribute values. Keep the
+            // filtered HTML and associated text intact through both native navigation exporters.
+            $metadata = [
+                'url' => $url ? $url->out(false) : '',
+                'label' => get_string(
                     'menusubmenutoggle',
                     'local_menubuilder',
                     html_to_text(format_string($item['label']), 0, false)
                 ),
                 // Native exporters flatten deeper levels. Carry only viewer-filtered rendered children.
-                'data-local-menubuilder-primary-nav-children' => $depth === 0
-                    ? menu_renderer::branch_html($item['children']) : null,
+                'children' => $depth === 0 ? menu_renderer::branch_html($item['children']) : '',
+            ];
+            $text = \html_writer::span($text, 'local-menubuilder-primary-nav-parent-marker', [
+                'data-local-menubuilder-primary-nav-parent' => base64_encode(json_encode($metadata, JSON_THROW_ON_ERROR)),
             ]);
         }
         $node = \navigation_node::create($text, $url, $url ? \navigation_node::TYPE_CUSTOM

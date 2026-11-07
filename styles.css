@@ -323,3 +323,7 @@
 }
 
 /* END shared search bar */
+
+#page-local-menubuilder-menus .local-plugin-search-bar-manager {
+    background: var(--bs-secondary-bg, #e9ecef);
+}

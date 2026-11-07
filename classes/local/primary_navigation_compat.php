@@ -63,10 +63,10 @@ final class primary_navigation_compat {
         }
         $PAGE->requires->data_for_js('M.local_menubuilder_primary_navigation', [
             // Preserve attribute escaping before Core's React exporter decodes the entire HTML string.
-            // These labels already passed the ordinary visibility, visibility and permission checks.
+            // These labels already passed the ordinary visibility and permission checks.
             'labels' => self::labels($primary),
             'modules' => array_values(self::$modules),
-        ]);
+        ], true);
     }
 
     /**
