@@ -1,3 +1,4 @@
+// Copyright (C) 2026 Andreas Giesen. See LICENSE.md.
 import fs from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import {createHash} from 'node:crypto';
