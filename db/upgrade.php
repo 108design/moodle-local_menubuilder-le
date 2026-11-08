@@ -10,17 +10,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Refuse an incompatible migration; this runs after native file replacement.
+ * Check that this package can update the installed plugin.
  *
  * @param int $oldversion Previously installed numeric plugin build.
  * @return bool
  */
 function xmldb_local_menubuilder_upgrade(int $oldversion): bool {
-    if (
-        $oldversion < 2026010100 || $oldversion > 2026093099
-            || get_config('local_menubuilder', 'distribution') !== 'marketplace'
-    ) {
-        throw new moodle_exception('unsupportedmigration', 'local_menubuilder');
+    $supportedbuild = $oldversion >= 2026010100 && $oldversion <= 2026093099;
+    $supportedsource = get_config('local_menubuilder', 'distribution') === 'marketplace';
+    if (!$supportedbuild || !$supportedsource) {
+        throw new moodle_exception('unsupportedupgrade', 'local_menubuilder');
     }
     return true;
 }

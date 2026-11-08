@@ -48,9 +48,6 @@ $string['menujsoninvalid'] = 'Prüfe das Menü-JSON: {$a}';
 $string['menusubmenutoggle'] = 'Untermenü öffnen: {$a}';
 $string['moduleinactive'] = ('Die Menüverwaltung gehört einem anderen Host oder benötigt einen Abgleich '
     . 'der Eigentümerschaft. Die vorhandene Zuordnung wurde beibehalten.');
-$string['unsupportedmigration'] = ('Dieser installierte Build lässt sich mit diesem Paket nicht migrieren. '
-    . 'Stelle das passende installierte Paket wieder her und prüfe die '
-    . 'Installationsquelle.');
 $string['privacy'] = 'Datenschutz';
 $string['privacy:metadata'] = ('Menüdefinitionen und Platzierungen speichern die Kennungen der anlegenden '
     . 'und zuletzt bearbeitenden Administratoren. Definitionen können '
@@ -169,6 +166,7 @@ $string['pagehelp_menudelete_article'] = ('<p><strong>Bekannte Verwendungen</str
 // Shared independent signed update protection.
 $string['updateguard_heading'] = 'Update angehalten';
 $string['updateguard_component'] = 'Das Paket für {$a} wurde abgewiesen.';
+$string['unsupportedupgrade'] = 'Dieses Paket kann die installierte Version nicht aktualisieren. Stelle die vorherigen Plugin-Dateien wieder her.';
 $string['updateguard_hint'] = 'Verwende ein freigegebenes Paket für die installierte Ausgabe. Du kannst den Vorgang erneut prüfen.';
 $string['updateguard_unchanged'] = 'Dieser Vorgang hat keine Plugin-Dateien ersetzt.';
 $string['updateguard_help'] = 'Das installierte Plugin prüft vor dem Ersetzen die Herausgebersignatur, den Paketinhalt, den erlaubten Updatekanal und die Kompatibilität. Eine gültige Signatur erlaubt keinen Wechsel auf eine andere Ausgabe. Wird ein Paket abgewiesen, stoppt die gesamte Sammelaktion.';

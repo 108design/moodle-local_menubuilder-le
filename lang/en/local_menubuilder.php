@@ -44,8 +44,6 @@ $string['menujsoninvalid'] = 'Check the menu JSON: {$a}';
 $string['menusubmenutoggle'] = 'Open submenu: {$a}';
 $string['moduleinactive'] = ('Menu management belongs to another host or needs ownership reconciliation. '
     . 'Existing ownership has been preserved.');
-$string['unsupportedmigration'] = ('This installed build cannot be migrated with this package. Restore the '
-    . 'matching installed package and review the installation source.');
 $string['privacy'] = 'Privacy';
 $string['privacy:metadata'] = ('Menu definitions and placements retain the identifiers of administrators who '
     . 'created or last changed them. Definitions can contain role shortnames and '
@@ -155,6 +153,7 @@ $string['pagehelp_menudelete_article'] = ('<p><strong>Known Uses</strong> lists 
 // Shared independent signed update protection.
 $string['updateguard_heading'] = 'Update stopped';
 $string['updateguard_component'] = 'The package for {$a} was rejected.';
+$string['unsupportedupgrade'] = 'This package cannot update the installed version. Restore the previous plugin files.';
 $string['updateguard_hint'] = 'Use an approved package for the installed edition. You can review the operation again.';
 $string['updateguard_unchanged'] = 'This request did not replace plugin files.';
 $string['updateguard_help'] = 'The installed plugin checks the publisher signature, package contents, permitted update channel and compatibility before replacement. A valid signature does not authorise a different edition. If one package is rejected, the whole batch stops.';
