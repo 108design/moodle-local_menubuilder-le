@@ -1,3 +1,4 @@
+// This file is part of Moodle - https://moodle.org/
 /**
  * @module local_menubuilder/menu
  * @copyright 2026 Andreas Giesen

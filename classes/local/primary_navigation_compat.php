@@ -1,4 +1,5 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
 /**
  * Keep managed HTML labels and native More-menu behaviour across the 5.3 React boundary.
  *

@@ -1,4 +1,5 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
 /**
  * Stable public facade for block, filter and third-party consumers.
  *
