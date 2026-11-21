@@ -1,4 +1,5 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
 /**
  * Privacy provider for shared Menu Builder definitions and their administrator attribution.
  *

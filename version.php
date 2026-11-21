@@ -1,4 +1,5 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
 /**
  * Version information.
  *
@@ -10,7 +11,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_menubuilder';
-$plugin->version = 2026010109;
+$plugin->version = 2026010113;
 $plugin->requires = 2024100700; // Moodle 4.5.
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = '0.10.0-beta';
+$plugin->release = '0.10.4-beta';
