@@ -62,6 +62,7 @@
 "/classes/local/service" -export-ignore -export-subst
 "/classes/local/service/factory.php" -export-ignore -export-subst
 "/classes/local/update_guard.php" -export-ignore -export-subst
+"/classes/local/update_notice.php" -export-ignore -export-subst
 "/classes/menu.php" -export-ignore -export-subst
 "/classes/output" -export-ignore -export-subst
 "/classes/output/context_help.php" -export-ignore -export-subst
@@ -77,6 +78,11 @@
 "/docs" export-ignore -export-subst
 "/docs/branding" export-ignore -export-subst
 "/docs/branding/logo.svg" export-ignore -export-subst
+"/docs/screenshots" export-ignore -export-subst
+"/docs/screenshots/menu-block-course.jpg" export-ignore -export-subst
+"/docs/screenshots/menu-builder-editor.jpg" export-ignore -export-subst
+"/docs/screenshots/menu-builder-topnav.jpg" export-ignore -export-subst
+"/docs/screenshots/menu-filter-content.jpg" export-ignore -export-subst
 "/editor-src" -export-ignore -export-subst
 "/editor-src/README.md" -export-ignore -export-subst
 "/editor-src/build.mjs" -export-ignore -export-subst
@@ -106,6 +112,7 @@
 "/pix/helpbrand.svg" -export-ignore -export-subst
 "/release-guard-policy.json" -export-ignore -export-subst
 "/release-manifest.json" -export-ignore -export-subst
+"/release-metadata.php" -export-ignore -export-subst
 "/release-signature.txt" -export-ignore -export-subst
 "/settings.php" -export-ignore -export-subst
 "/styles" -export-ignore -export-subst
@@ -142,4 +149,5 @@
 "/thirdparty/codemirror-json/w3c-keyname-LICENSE" -export-ignore -export-subst
 "/thirdpartylibs.xml" -export-ignore -export-subst
 "/update-guard.php" -export-ignore -export-subst
+"/update-notice.php" -export-ignore -export-subst
 "/version.php" -export-ignore -export-subst
