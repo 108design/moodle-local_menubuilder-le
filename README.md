@@ -2,7 +2,7 @@
   <img src="docs/branding/logo.svg" alt="Menu Builder logo" width="125" height="125">
 </p>
 
-# Menu Builder LE
+# Menu Builder LE - Limited Beta Preview
 
 Create central navigation menus in JSON and reuse them in Moodle’s main navigation, menu blocks and filtered content. Menus support three levels, internal and external links, email links, anchors, dropdown containers, Moodle pix and Font Awesome icons, and viewer conditions.
 
