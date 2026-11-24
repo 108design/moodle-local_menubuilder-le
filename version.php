@@ -11,7 +11,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_menubuilder';
-$plugin->version = 2026010113;
+$plugin->version = 2026010114;
 $plugin->requires = 2024100700; // Moodle 4.5.
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = '0.10.4-beta';
+$plugin->release = '0.10.5-beta';
