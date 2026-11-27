@@ -100,6 +100,8 @@
 "/lang" -export-ignore -export-subst
 "/lang/de" -export-ignore -export-subst
 "/lang/de/local_menubuilder.php" -export-ignore -export-subst
+"/lang/de_du" -export-ignore -export-subst
+"/lang/de_du/local_menubuilder.php" -export-ignore -export-subst
 "/lang/en" -export-ignore -export-subst
 "/lang/en/local_menubuilder.php" -export-ignore -export-subst
 "/lib.php" -export-ignore -export-subst
